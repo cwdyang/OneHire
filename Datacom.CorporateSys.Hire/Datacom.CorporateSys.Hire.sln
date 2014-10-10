@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.Hire", "Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.csproj", "{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.Hire.Tests", "Datacom.CorporateSys.Hire.Tests\Datacom.CorporateSys.Hire.Tests.csproj", "{AE50A6DF-EE2B-44F7-8DB1-AE83E8E255D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.Hire.Domain", "..\Datacom.CorporateSys.Hire.Domain\Datacom.CorporateSys.Hire.Domain.csproj", "{B5E1090F-B323-43A5-A53B-B9269D03EBFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.Hire.Datastore", "..\Datacom.CorporateSys.Hire.Datastore\Datacom.CorporateSys.Hire.Datastore.csproj", "{3166EAD0-5897-4F40-B878-E2E2BC284599}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.HireAPI", "..\Datacom.CorporateSys.HireAPI\Datacom.CorporateSys.HireAPI.csproj", "{4E555FB5-2922-4AE6-8204-DD582B25E171}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datacom.CorporateSys.Hire.Datastore.Tests", "..\Datacom.CorporateSys.Hire.Datastore.Tests\Datacom.CorporateSys.Hire.Datastore.Tests.csproj", "{A7CA6F74-7A30-4A88-8DEB-3EDE95CB23C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE50A6DF-EE2B-44F7-8DB1-AE83E8E255D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE50A6DF-EE2B-44F7-8DB1-AE83E8E255D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE50A6DF-EE2B-44F7-8DB1-AE83E8E255D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE50A6DF-EE2B-44F7-8DB1-AE83E8E255D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5E1090F-B323-43A5-A53B-B9269D03EBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5E1090F-B323-43A5-A53B-B9269D03EBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5E1090F-B323-43A5-A53B-B9269D03EBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5E1090F-B323-43A5-A53B-B9269D03EBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3166EAD0-5897-4F40-B878-E2E2BC284599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3166EAD0-5897-4F40-B878-E2E2BC284599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3166EAD0-5897-4F40-B878-E2E2BC284599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3166EAD0-5897-4F40-B878-E2E2BC284599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E555FB5-2922-4AE6-8204-DD582B25E171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E555FB5-2922-4AE6-8204-DD582B25E171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E555FB5-2922-4AE6-8204-DD582B25E171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E555FB5-2922-4AE6-8204-DD582B25E171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7CA6F74-7A30-4A88-8DEB-3EDE95CB23C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CA6F74-7A30-4A88-8DEB-3EDE95CB23C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7CA6F74-7A30-4A88-8DEB-3EDE95CB23C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7CA6F74-7A30-4A88-8DEB-3EDE95CB23C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

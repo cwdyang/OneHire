@@ -1,0 +1,5 @@
+c:\development\onehire\Datacom.CorporateSys.Hire.Domain\bin\Debug\Datacom.CorporateSys.Hire.Domain.dll
+c:\development\onehire\Datacom.CorporateSys.Hire.Domain\bin\Debug\Datacom.CorporateSys.Hire.Domain.pdb
+c:\development\onehire\Datacom.CorporateSys.Hire.Domain\obj\Debug\Datacom.CorporateSys.Hire.Domain.dll
+c:\development\onehire\Datacom.CorporateSys.Hire.Domain\obj\Debug\Datacom.CorporateSys.Hire.Domain.pdb
+c:\development\onehire\Datacom.CorporateSys.Hire.Domain\obj\Debug\Datacom.CorporateSys.Hire.Domain.csprojResolveAssemblyReference.cache

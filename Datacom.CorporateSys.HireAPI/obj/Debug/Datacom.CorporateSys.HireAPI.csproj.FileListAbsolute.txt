@@ -1,0 +1,15 @@
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\obj\Debug\Datacom.CorporateSys.HireAPI.csprojResolveAssemblyReference.cache
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.HireAPI.dll.config
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.HireAPI.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.HireAPI.pdb
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.Hire.Datastore.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.Hire.Domain.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\EntityFramework.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.Hire.Datastore.pdb
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\Datacom.CorporateSys.Hire.Domain.pdb
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\EntityFramework.xml
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\obj\Debug\Datacom.CorporateSys.HireAPI.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\obj\Debug\Datacom.CorporateSys.HireAPI.pdb
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\AutoMapper.Net4.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\AutoMapper.dll
+C:\Development\OneHire\Datacom.CorporateSys.HireAPI\bin\Debug\AutoMapper.xml
