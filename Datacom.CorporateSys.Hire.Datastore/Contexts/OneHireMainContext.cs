@@ -51,6 +51,8 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
         public IDbSet<QuestionOption> QuestionOptions { get; set; }
         public IDbSet<Answer> Answers { get; set; }
 
+
+        //YOU NEED TO INSTALL EF6 nuget in the host application
         public OneHireMainContext()
             : base("name=dbOneHire")
 		{

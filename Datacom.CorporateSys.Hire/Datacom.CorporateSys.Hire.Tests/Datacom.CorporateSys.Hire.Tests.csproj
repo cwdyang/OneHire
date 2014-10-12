@@ -33,6 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -130,6 +137,10 @@
     <ProjectReference Include="..\..\Datacom.CorporateSys.Hire.Domain\Datacom.CorporateSys.Hire.Domain.csproj">
       <Project>{b5e1090f-b323-43a5-a53b-b9269d03ebfc}</Project>
       <Name>Datacom.CorporateSys.Hire.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Datacom.CorporateSys.HireAPI\Datacom.CorporateSys.HireAPI.csproj">
+      <Project>{4e555fb5-2922-4ae6-8204-dd582b25e171}</Project>
+      <Name>Datacom.CorporateSys.HireAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.csproj">
       <Project>{10A5AB65-0E92-497C-AC4D-C9CBFF4A4E46}</Project>

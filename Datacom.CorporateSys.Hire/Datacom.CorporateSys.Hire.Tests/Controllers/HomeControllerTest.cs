@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Datacom.CorporateSys.HireAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Datacom.CorporateSys.Hire;
 using Datacom.CorporateSys.Hire.Controllers;
@@ -26,29 +27,15 @@ namespace Datacom.CorporateSys.Hire.Tests.Controllers
         }
 
         [TestMethod]
-        public void About()
+        public void GetExamFromAPI()
         {
-            // Arrange
-            HomeController controller = new HomeController();
+            var examService = new ExamService();
+            var candidateService = new CandidateService();
 
-            // Act
-            ViewResult result = controller.About() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
+            var exam = examService.GetLatestOpenExam(candidateService.GetCandidate("davidy@datacom.co.nz").Id);
+            Assert.IsNotNull(exam);
         }
 
-        [TestMethod]
-        public void Contact()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.Contact() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-        }
+       
     }
 }

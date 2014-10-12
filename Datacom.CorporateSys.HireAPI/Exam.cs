@@ -107,6 +107,9 @@ namespace Datacom.CorporateSys.HireAPI
         public virtual IList<Question> Questions { get; set; }
 
         [DataMember]
+        public string CategoryName { get; set; }
+
+        [DataMember]
         public virtual IList<Option> Options { get; set; }
     }
 

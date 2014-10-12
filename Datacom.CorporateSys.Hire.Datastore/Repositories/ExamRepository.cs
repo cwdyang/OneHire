@@ -10,6 +10,12 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
 {
     public class ExamRepository :OneHireBaseRepository, IExamRepository
     {
+
+        public List<Question> GetSubQuestions(Guid qusetionId, bool loadQuetionOptions = false)
+        {
+            IQueryable<Question> questionQueryable = null;
+        }
+
         public List<Exam> GetExams(Guid candidateId, bool loadQuestions = false,bool loadQuetionOptions = false)
         {
             //eager loading coz lazy loading turned off
@@ -30,10 +36,14 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             else
                 candidateQueryable = DbContext.Candidates;
 
+
             if (candidateQueryable != null)
                candidate = candidateQueryable.FirstOrDefault(x => x.Id == candidateId);
 
             var exams = (candidate != null) ? candidate.Exams: Enumerable.Empty<Exam>();
+
+            //this is a hack, need a better solution
+            exams.ToList().ForEach(x=>x.Questions.ToList().ForEach(y=>DbContext.Entry(y).Reference(z=>z.Category).Load()));
 
             return exams.ToList();
         }

@@ -9,12 +9,4 @@ namespace Datacom.CorporateSys.HireAPI
         [OperationContract]
         Candidate GetCandidate(string emailAddress);
     }
-
-    public class CandidateService : ICandidateService
-    {
-        public Candidate GetCandidate(string emailAddress)
-        {
-            return new Candidate();
-        }
-    }
 }
