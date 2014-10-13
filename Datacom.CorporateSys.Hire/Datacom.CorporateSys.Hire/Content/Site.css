@@ -485,6 +485,12 @@ textarea {
     margin: 20px 0 10px 0;
 }
 
+input[type="radio"]  
+{
+    width: 20px;
+    text-align: left;
+}
+
 .message-success {
     color: #7ac0da;
     font-size: 1.3em;

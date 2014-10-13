@@ -11,17 +11,37 @@
 
 <article>
     <p>
-        <h2>You are logged in as:</h2>
+        <h3>You are logged in as: @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+    </p>
+    
+    <p>
+        Examiner = @Html.DisplayFor(model => model.Exam.Examiner)
+    </p>
+    
+    <p>
+        Total Questions = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count)
+    </p>
+    
+    <p>
+        <table>
+        <tr>
+            <td colspan="2">
+                <b>uestion 1 = @Html.DisplayFor(model => model.Exam.Questions.First().Text)</b>
+            </td>
+        </tr>
+        @foreach (var option in Model.Exam.Questions.First().Options)
+        {
+            <tr>
+                <td>
+                    @Html.RadioButtonFor(b => b.Exam.Questions.First().Id, option.Id,true) 
+                </td>
+                <td>
+                    @option.Text
+                </td>
+            </tr>
+        }
+        </table>
 </p>
-    <p>
-        @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)
-    </p>
-    <p>
-        Your exam quetion:
-    </p>
-    <p>
-        
-    </p>
 </article>
 
 <aside>
