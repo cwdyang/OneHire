@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.Answer" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAIAAAAAAAAAABABBAAAAIACAAAA=</HashCode>
+      <FileName>Models\Answer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.BaseObject" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGEAAAAQAAAAAAAAEAAAAgAAACAAAAKgAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.Candidate" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACCEAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAg=</HashCode>
+      <FileName>Models\Candidate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.Category" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQBAAAAAAAAAAAAAAAAAAAEAAAAAAAgAAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.Exam" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACCAAAAAAAQAAAAAAAAAAAAAADEAAEQAAAAAAAAAQ=</HashCode>
+      <FileName>Models\Exam.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.Question" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAgACAIAAAAAAAAAAAAgBAAAAIAAgCAA=</HashCode>
+      <FileName>Models\Question.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Datacom.CorporateSys.Hire.Domain.Models.QuestionOption" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAEQAAAAAQAAAA=</HashCode>
+      <FileName>Models\QuestionOption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Datacom.CorporateSys.Hire.Domain.Models.CategoryType" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAJAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

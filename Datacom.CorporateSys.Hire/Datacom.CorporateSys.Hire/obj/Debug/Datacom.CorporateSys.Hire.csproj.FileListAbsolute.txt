@@ -86,3 +86,11 @@ c:\development\onehire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\obj\D
 c:\development\onehire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\obj\Debug\Datacom.CorporateSys.Hire.pdb
 c:\development\onehire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\EntityFramework.SqlServer.dll
 c:\development\onehire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\EntityFramework.SqlServer.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.HireAPI.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\AutoMapper.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.Hire.Domain.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.Hire.Datastore.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.HireAPI.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\AutoMapper.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.Hire.Domain.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire\bin\Datacom.CorporateSys.Hire.Datastore.pdb

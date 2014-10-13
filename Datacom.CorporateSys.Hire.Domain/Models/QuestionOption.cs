@@ -20,9 +20,13 @@ namespace Datacom.CorporateSys.Hire.Domain.Models
         public QuestionOption()
         {
             this.Answers = new HashSet<Answer>();
+            this.Questions = new HashSet<Question>();
         }
 
         //one to many QuestionOption>Answer
         public virtual ICollection<Answer> Answers { get; set; }
+
+        //one to many Question>QuestionOption
+        public virtual ICollection<Question> Questions { get; set; }
     }
 }

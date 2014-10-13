@@ -21,6 +21,10 @@ namespace Datacom.CorporateSys.Hire.Datastore.Mappings
             HasRequired<Category>(s => s.Category)
             .WithMany(s => s.Questions).HasForeignKey(s => s.CategoryId);
 
+            //one to many optional QuestionOption>question
+            HasOptional<QuestionOption>(e => e.QuestionOption)
+            .WithMany(s => s.Questions).HasForeignKey(s => s.QuestionOptionId);
+
         }
     }
 }

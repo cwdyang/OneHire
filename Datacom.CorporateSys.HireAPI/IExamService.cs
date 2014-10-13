@@ -8,6 +8,6 @@ namespace Datacom.CorporateSys.HireAPI
     {
        
         [OperationContract]
-        Exam GetLatestOpenExam(Guid candidateGuid);
+        Exam GetLatestOpenExamWithQuestionOptions(Guid candidateGuid);
     }
 }

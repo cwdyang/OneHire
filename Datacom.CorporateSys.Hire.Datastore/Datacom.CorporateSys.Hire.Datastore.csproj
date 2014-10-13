@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,9 +57,9 @@
     <Compile Include="Mappings\BaseObjectMapping.cs" />
     <Compile Include="Mappings\AnswerMapping.cs" />
     <Compile Include="Mappings\QuestionOptionMapping.cs" />
-    <Compile Include="Migrations\201410090521375_first.cs" />
-    <Compile Include="Migrations\201410090521375_first.Designer.cs">
-      <DependentUpon>201410090521375_first.cs</DependentUpon>
+    <Compile Include="Migrations\201410122210399_start.cs" />
+    <Compile Include="Migrations\201410122210399_start.Designer.cs">
+      <DependentUpon>201410122210399_start.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,7 +70,11 @@
     <Compile Include="Repositories\IOneHireBaseRepository.cs" />
     <Compile Include="Repositories\OneHireBaseRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201410122210399_start.resx">
+      <DependentUpon>201410122210399_start.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -79,11 +84,6 @@
       <Project>{B5E1090F-B323-43A5-A53B-B9269D03EBFC}</Project>
       <Name>Datacom.CorporateSys.Hire.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201410090521375_first.resx">
-      <DependentUpon>201410090521375_first.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

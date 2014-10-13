@@ -1,4 +1,5 @@
 using System.Linq;
+using Datacom.CorporateSys.Hire.Datastore.Contexts;
 using Datacom.CorporateSys.Hire.Domain.Models;
 
 namespace Datacom.CorporateSys.Hire.Datastore.Repositories
@@ -8,6 +9,15 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
         public Candidate GetCandidate(string emailAddress)
         {
             return DbContext.Candidates.FirstOrDefault(x => x.Email == emailAddress);
+        }
+
+        public CandidateRepository()
+        {
+        }
+
+        public CandidateRepository(IOneHireMainContext context)
+        {
+            base.DbContext = context;
         }
     }
 }

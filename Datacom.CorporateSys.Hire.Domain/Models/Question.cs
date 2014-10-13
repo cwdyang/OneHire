@@ -47,5 +47,9 @@ namespace Datacom.CorporateSys.Hire.Domain.Models
 
         //one to many Question>QuestionOption
         public virtual ICollection<QuestionOption> QuestionOptions { get; set; }
+
+        //one to many optional QuestionOption>question
+        public Guid? QuestionOptionId { get; set; }
+        public virtual QuestionOption QuestionOption { get; set; }
     }
 }

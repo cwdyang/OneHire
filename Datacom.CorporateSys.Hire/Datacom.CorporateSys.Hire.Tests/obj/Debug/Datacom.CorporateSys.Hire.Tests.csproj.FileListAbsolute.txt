@@ -88,6 +88,6 @@ C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests
 C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\AutoMapper.dll
 C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\Datacom.CorporateSys.HireAPI.pdb
 C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\AutoMapper.xml
-C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\AutoMapper.Net4.dll
 C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\EntityFramework.SqlServer.dll
 C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\EntityFramework.SqlServer.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire\Datacom.CorporateSys.Hire.Tests\bin\Debug\AutoMapper.Net4.dll

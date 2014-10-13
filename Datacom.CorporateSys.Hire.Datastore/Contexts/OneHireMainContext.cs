@@ -3,6 +3,8 @@ using System.Data.Entity.Infrastructure;
 using Datacom.CorporateSys.Hire.Datastore.Mappings;
 using Datacom.CorporateSys.Hire.Domain.Models;
 
+using System.Data.Linq;
+
 namespace Datacom.CorporateSys.Hire.Datastore.Contexts
 {
     /// <summary>
@@ -29,6 +31,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
     /// drop database OneHire
     /// go
     /// 
+    /// delete mdfs and ldfs from C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\
     /// 
     /// we are using
     /// Inheritance with EF Code First: Part 3 – Table per Concrete Type (TPC)

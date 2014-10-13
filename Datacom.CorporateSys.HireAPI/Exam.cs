@@ -70,6 +70,9 @@ namespace Datacom.CorporateSys.HireAPI
     {
         [DataMember]
         public bool IsSelected { get; set; }
+
+        [DataMember]
+        public virtual IList<Question> Questions { get; set; }
     }
 
     [DataContract]
@@ -77,6 +80,9 @@ namespace Datacom.CorporateSys.HireAPI
     {
         [DataMember]
         public Option Option { get; set; }
+
+        [DataMember]
+        public Exam Exam { get; set; }
         
         [DataMember]
         public string AnswerText { get; set; }

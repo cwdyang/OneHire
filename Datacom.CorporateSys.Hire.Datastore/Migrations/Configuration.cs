@@ -153,22 +153,11 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 UpdatedBy = "davidy"
             };
 
-            var q1a = new Question
-            {
-                Id = Guid.NewGuid(),
-                DataType = "RadioButtonGroup",
-                Category = catProgAdvanced,
-                Caption = "What is the primary use of B-trees?",
-                DisplaySequence = 1,
-                CreatedOn = DateTimeOffset.Now,
-                IsEnabled = true,
-                UpdatedBy = "davidy",
-                ParentBaseObject = q1
-            };
+            
 
             context.Questions.AddOrUpdate(q1);
-            context.Questions.AddOrUpdate(q1a);
 
+            
 
             var q1_1 = new QuestionOption()
             {
@@ -181,6 +170,23 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 Question = q1,
                 IsSelected = true
             };
+
+            var q1a = new Question
+            {
+                Id = Guid.NewGuid(),
+                DataType = "RadioButtonGroup",
+                Category = catProgAdvanced,
+                Caption = "What is the primary use of B-trees?",
+                DisplaySequence = 1,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                ParentBaseObject = q1,
+                QuestionOption = q1_1
+            };
+
+            context.Questions.AddOrUpdate(q1a);
+
 
             var q1_2 = new QuestionOption()
             {

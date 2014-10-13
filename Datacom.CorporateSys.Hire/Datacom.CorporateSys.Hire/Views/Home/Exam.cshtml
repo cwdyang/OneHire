@@ -1,0 +1,37 @@
+﻿@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
+
+@{
+    ViewBag.Title = "Datacom internal interview exam";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<article>
+    <p>
+        <h2>You are logged in as:</h2>
+</p>
+    <p>
+        @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)
+    </p>
+    <p>
+        Your exam quetion:
+    </p>
+    <p>
+        
+    </p>
+</article>
+
+<aside>
+    <h3>Aside Title</h3>
+    <p>
+        Use this area to provide additional information.
+    </p>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Exam", "Exam", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+</aside>

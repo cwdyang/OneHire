@@ -1,19 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Datacom.CorporateSys.Hire.Datastore.Contexts;
 using Datacom.CorporateSys.Hire.Domain.Models;
 
 namespace Datacom.CorporateSys.Hire.Datastore.Repositories
 {
     public class ExamRepository :OneHireBaseRepository, IExamRepository
     {
+        public ExamRepository()
+        {
+        }
 
-        public List<Question> GetSubQuestions(Guid qusetionId, bool loadQuetionOptions = false)
+        public ExamRepository(IOneHireMainContext context)
+        {
+            base.DbContext = context;
+        }
+
+        public List<Question> GetSubQuestions(Guid qusetionOptionId, bool loadQuetionOptions = false)
         {
             IQueryable<Question> questionQueryable = null;
+            var list = Enumerable.Empty<Question>().ToList();
+
+            questionQueryable = loadQuetionOptions ? DbContext.Questions.Include(x => x.QuestionOptions) : DbContext.Questions;
+
+            list = questionQueryable.Where(x => x.QuestionOptionId == qusetionOptionId).ToList();
+
+            list.ForEach(y=>DbContext.Entry(y).Reference(z=>z.Category).Load());
+
+            return list;
         }
 
         public List<Exam> GetExams(Guid candidateId, bool loadQuestions = false,bool loadQuetionOptions = false)
@@ -42,7 +62,8 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
 
             var exams = (candidate != null) ? candidate.Exams: Enumerable.Empty<Exam>();
 
-            //this is a hack, need a better solution
+
+            //this is a hack, need a better solution if larger numbers are requrieed
             exams.ToList().ForEach(x=>x.Questions.ToList().ForEach(y=>DbContext.Entry(y).Reference(z=>z.Category).Load()));
 
             return exams.ToList();
@@ -55,6 +76,19 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             var exam = GetExams(candidateId,loadQuestions,loadQuetionOptions).OrderByDescending(x => x.CreatedOn).FirstOrDefault(x => x.CompletedOn == null);
 
             return exam;
+        }
+
+        public Answer AddAnswer(Answer answer)
+        {
+            //prevents re-insertion
+            DbContext.QuestionOptions.Attach(answer.QuestionOption);
+            DbContext.Exams.Attach(answer.Exam);
+
+            DbContext.Answers.AddOrUpdate(answer);
+
+            DbContext.SaveChanges();
+
+            return answer;
         }
     }
 }

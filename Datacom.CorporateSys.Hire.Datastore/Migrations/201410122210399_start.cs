@@ -3,7 +3,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class first : DbMigration
+    public partial class start : DbMigration
     {
         public override void Up()
         {
@@ -134,18 +134,22 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                         Level = c.Int(nullable: false),
                         ScorePoint = c.Int(nullable: false),
                         CategoryId = c.Guid(nullable: false),
+                        QuestionOptionId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("Hire.BaseObject", t => t.Id)
                 .ForeignKey("Hire.Category", t => t.CategoryId)
+                .ForeignKey("Hire.QuestionOption", t => t.QuestionOptionId)
                 .Index(t => t.Id)
-                .Index(t => t.CategoryId);
+                .Index(t => t.CategoryId)
+                .Index(t => t.QuestionOptionId);
             
         }
         
         public override void Down()
         {
             return;
+            DropForeignKey("Hire.Question", "QuestionOptionId", "Hire.QuestionOption");
             DropForeignKey("Hire.Question", "CategoryId", "Hire.Category");
             DropForeignKey("Hire.Question", "Id", "Hire.BaseObject");
             DropForeignKey("Hire.QuestionOption", "QuestionId", "Hire.Question");
@@ -160,6 +164,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             DropForeignKey("dbo.ExamCategory", "ExamId", "Hire.Exam");
             DropForeignKey("Hire.Exam", "CandidateId", "Hire.Candidate");
             DropForeignKey("Hire.BaseObject", "ParentId", "Hire.BaseObject");
+            DropIndex("Hire.Question", new[] { "QuestionOptionId" });
             DropIndex("Hire.Question", new[] { "CategoryId" });
             DropIndex("Hire.Question", new[] { "Id" });
             DropIndex("Hire.QuestionOption", new[] { "QuestionId" });
