@@ -1,0 +1,57 @@
+﻿@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
+
+@{
+    ViewBag.Title = "Datacom internal interview exam";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+@using (Html.BeginForm("AnswerQuestion","Exam",FormMethod.Post))
+{
+    
+        <article>
+            <fieldset>
+                <p>
+                    @{ Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model.Exam.Questions.First(x => x.Sequence == Model.Exam.CurrentQuestionNumber)); }
+                </p>
+                <p>
+                    @if (Model.Exam.CurrentQuestionNumber > 1)
+                    {
+                        @Html.ActionLink("<<", "Exam", "Exam", new
+                        {
+                            // htmlAttributes
+                            questionNumber = Model.Exam.CurrentQuestionNumber - 1
+                        }, null)
+                    }
+
+
+                    @if (Model.Exam.CurrentQuestionNumber < Model.Exam.Questions.ToList().Count)
+                    {
+                        @Html.ActionLink(">>", "Exam", "Exam", new
+                        {
+                            // htmlAttributes
+                            questionNumber = Model.Exam.CurrentQuestionNumber + 1
+                        }, null)
+                    }
+
+                </p>
+            </fieldset>
+    </article>
+}
+<aside>
+    <p>
+        <h3>You are: @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+    </p>
+
+    <p>
+        Examiner = @Html.DisplayFor(model => model.Exam.Examiner)
+    </p>
+
+    <p>
+        Total Questions = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count)
+    </p>
+
+</aside>

@@ -6,7 +6,7 @@ using Datacom.CorporateSys.HireAPI;
 
 namespace Datacom.CorporateSys.Hire.ViewModels
 {
-    public class ExamViewModel
+    public partial class ExamViewModel
     {
         public Candidate Candidate { get; set; }
         public Exam Exam { get; set; }
@@ -17,4 +17,6 @@ namespace Datacom.CorporateSys.Hire.ViewModels
             Exam = exam;
         }
     }
+
+
 }

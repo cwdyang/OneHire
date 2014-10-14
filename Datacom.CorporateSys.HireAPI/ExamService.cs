@@ -36,8 +36,6 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.Exam, opt => opt.MapFrom(d => d.Exam))
                 .ForMember(o => o.ScorePoint, opt => opt.MapFrom(d => d.ScorePoint));
 
-           
-
             Mapper.CreateMap<Answer, Hire.Domain.Models.Answer>()
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
                 .ForMember(o => o.AnswerText, opt => opt.MapFrom(d => d.AnswerText))
@@ -51,6 +49,7 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.ImageUri, opt => opt.MapFrom(d => d.ImageUri))
                 .ForMember(o => o.Level, opt => opt.MapFrom(d => d.Level))
                 .ForMember(o => o.Questions, opt => opt.Ignore())
+                .ForMember(o => o.Sequence, opt => opt.MapFrom(d => d.DisplaySequence))
                 .ForMember(o => o.Text, opt => opt.MapFrom(d => d.Caption))
                 .ForMember(o => o.ScorePoint, opt => opt.MapFrom(d => d.ScorePoint))
                 .ForMember(o => o.CategoryName, opt => opt.ResolveUsing<CategoryNameResolver>())
@@ -89,6 +88,10 @@ namespace Datacom.CorporateSys.HireAPI
 
                 examToReturn = Mapper.Map<Exam>(openExam);
             }
+
+            var i = 1;
+            var list = examToReturn.Questions.ToList().OrderBy(x=>x.Sequence);
+            list.ToList().ForEach(x => { x.Sequence = i++; });
 
             return examToReturn;
         }

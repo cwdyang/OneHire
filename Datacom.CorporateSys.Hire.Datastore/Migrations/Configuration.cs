@@ -229,6 +229,8 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             context.QuestionOptions.AddOrUpdate(q1_3);
             context.QuestionOptions.AddOrUpdate(q1_4);
 
+           
+
             var q1a_1 = new QuestionOption()
             {
                 Id = Guid.NewGuid(),
@@ -283,7 +285,50 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             context.QuestionOptions.AddOrUpdate(q1a_3);
             context.QuestionOptions.AddOrUpdate(q1a_4);
 
-            var questions = new HashSet<Question> {q1};
+            var q2 = new Question
+            {
+                Id = Guid.NewGuid(),
+                DataType = "RadioButtonGroup",
+                Category = catProgAdvanced,
+                Caption = "Question 2",
+                DisplaySequence = 2,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                ParentBaseObject = q1,
+                QuestionOption = q1_1
+            };
+
+            context.Questions.AddOrUpdate(q2);
+
+            var q2_1 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Incorrect",
+                DisplaySequence = 1,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q2,
+                IsSelected = false
+            };
+
+            var q2_2 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Correct",
+                DisplaySequence = 2,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q2,
+                IsSelected = true
+            };
+
+            context.QuestionOptions.AddOrUpdate(q2_1);
+            context.QuestionOptions.AddOrUpdate(q2_2);
+
+            var questions = new HashSet<Question> {q1,q2};
             var categories = new HashSet<Category>{catProgAdvanced};
 
             var exam = new Exam
@@ -292,8 +337,8 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 Categories = categories,
                 Candidate = candidate,
                 CreatedOn = DateTimeOffset.Now,
-                CompletedOn = DateTimeOffset.Now,
-                StartedOn = DateTimeOffset.Now,
+                CompletedOn = null,//DateTimeOffset.Now,
+                StartedOn = null,//DateTimeOffset.Now,
                 Examiner = "davidy",
                 Questions = questions
             };

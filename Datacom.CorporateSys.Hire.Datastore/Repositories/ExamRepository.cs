@@ -56,7 +56,6 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             else
                 candidateQueryable = DbContext.Candidates;
 
-
             if (candidateQueryable != null)
                candidate = candidateQueryable.FirstOrDefault(x => x.Id == candidateId);
 

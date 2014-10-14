@@ -56,6 +56,12 @@ namespace Datacom.CorporateSys.HireAPI
         public virtual IList<Category> Categories { get; set; }
 
         [DataMember]
+        public Guid CurrentQuestionId { get; set; }
+
+        [DataMember]
+        public int CurrentQuestionNumber { get; set; }
+
+        [DataMember]
         public DateTimeOffset CreatedOn { get; set; }
 
         [DataMember]
@@ -117,6 +123,13 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public virtual IList<Option> Options { get; set; }
+
+        [DataMember]
+        public Guid SelectedOptionId { get; set; }
+
+
+        [DataMember]
+        public int Sequence { get; set; }
     }
 
     [DataContract]

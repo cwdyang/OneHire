@@ -24,18 +24,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
             return View();
         }
 
-        public ActionResult Exam()
-        {
-            var candidateService = new CandidateService();
-            var examService = new ExamService();
-
-            var candidate = candidateService.GetCandidate("davidy@datacom.co.nz");
-            var exam = examService.GetLatestOpenExamWithQuestionOptions(candidate.Id);
-
-            var viewModel = new ExamViewModel(candidate, exam);
-
-            return View(viewModel);
-        }
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

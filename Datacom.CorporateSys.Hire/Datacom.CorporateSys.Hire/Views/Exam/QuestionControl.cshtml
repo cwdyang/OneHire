@@ -1,0 +1,48 @@
+﻿@model Datacom.CorporateSys.HireAPI.Question
+
+@{
+    Layout = null;
+}
+
+<table>
+    <tr>
+        <td colspan="2">
+            <b>Category : @Html.DisplayFor(model => model.CategoryName)</b>
+            <br />
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <b>Question @Html.DisplayFor(model => model.Sequence) : @Html.DisplayFor(model => model.Text)</b>
+        </td>
+    </tr>
+    @foreach (var option in Model.Options)
+    {
+        <tr>
+            <td>
+                <!--http://msdn.microsoft.com/en-us/library/dd410596.aspx-->
+                @Html.RadioButtonFor(model => model.SelectedOptionId, option.Id)
+                <!--Html.RadioButton("Buyer", "Buyer", new { onchange = "this.form.submit();" })-->
+            </td>
+            <td>
+                @option.Text
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @if (false)
+                {
+
+                    Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model);
+
+                }
+            </td>
+        </tr>
+    }
+    
+    <tr><td colspan="2">
+            <input type='submit' value='submit'/>    
+
+        </td></tr>
+</table>
