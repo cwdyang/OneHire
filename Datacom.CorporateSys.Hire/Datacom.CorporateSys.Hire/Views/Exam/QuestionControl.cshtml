@@ -1,4 +1,5 @@
-﻿@model Datacom.CorporateSys.HireAPI.Question
+﻿@using Newtonsoft.Json
+@model Datacom.CorporateSys.HireAPI.Question
 
 @{
     Layout = null;
@@ -21,8 +22,17 @@
     {
         <tr>
             <td>
+                @{
+                   bool checkOption = (Model.SelectedOption != null && Model.SelectedOption.Id == option.Id);
+                   bool disableOption = (Model.SelectedOption != null);
+                   var array = new Dictionary<string, object>();
+                   if(checkOption)
+                   { array.Add("checked", "checked"); }
+                   if (disableOption)
+                   { array.Add("disabled", "disabled"); }
+               }
                 <!--http://msdn.microsoft.com/en-us/library/dd410596.aspx-->
-                @Html.RadioButtonFor(model => model.SelectedOptionId, option.Id)
+                @Html.RadioButtonFor(model => model.SelectedOptionJSON, Newtonsoft.Json.JsonConvert.SerializeObject(option), array) <!--disabled=(Model.SelectedOption != null)?"disabled":"" -->
                 <!--Html.RadioButton("Buyer", "Buyer", new { onchange = "this.form.submit();" })-->
             </td>
             <td>
@@ -42,7 +52,13 @@
     }
     
     <tr><td colspan="2">
-            <input type='submit' value='submit'/>    
+            @if (Model.SelectedOption == null)
+            {
+                <input type='submit' value='Confirm Answer' />
+            }
+            else
+            {
 
+            }
         </td></tr>
 </table>

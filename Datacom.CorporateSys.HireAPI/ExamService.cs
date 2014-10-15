@@ -20,12 +20,14 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
                 .ForMember(o => o.IsSelected, opt => opt.MapFrom(d => d.IsSelected))
                 .ForMember(o => o.Questions, opt => opt.MapFrom(d => d.Questions))
+                .ForMember(o => o.ParentQuestionId, opt => opt.MapFrom(d => d.QuestionId))
                 .ForMember(o => o.Text, opt => opt.MapFrom(d => d.Caption));
 
             Mapper.CreateMap<Option, Hire.Domain.Models.QuestionOption>()
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
                 .ForMember(o => o.IsSelected, opt => opt.MapFrom(d => d.IsSelected))
                 .ForMember(o => o.Questions, opt => opt.MapFrom(d => d.Questions))
+                .ForMember(o => o.QuestionId, opt => opt.MapFrom(d => d.ParentQuestionId))
                 .ForMember(o => o.Caption, opt => opt.MapFrom(d => d.Text));
 
             Mapper.CreateMap<Hire.Domain.Models.Answer, Answer>()
@@ -49,6 +51,8 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.ImageUri, opt => opt.MapFrom(d => d.ImageUri))
                 .ForMember(o => o.Level, opt => opt.MapFrom(d => d.Level))
                 .ForMember(o => o.Questions, opt => opt.Ignore())
+                .ForMember(o => o.SelectedOption, opt => opt.Ignore())
+                .ForMember(o => o.SelectedOptionJSON, opt => opt.Ignore())
                 .ForMember(o => o.Sequence, opt => opt.MapFrom(d => d.DisplaySequence))
                 .ForMember(o => o.Text, opt => opt.MapFrom(d => d.Caption))
                 .ForMember(o => o.ScorePoint, opt => opt.MapFrom(d => d.ScorePoint))
@@ -56,10 +60,35 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.Options, opt => opt.MapFrom(d => d.QuestionOptions))
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id));
 
+            Mapper.CreateMap<Question, Hire.Domain.Models.Question>()
+               .ForMember(o => o.DataType, opt => opt.MapFrom(d => d.DataType))
+               .ForMember(o => o.ImageUri, opt => opt.MapFrom(d => d.ImageUri))
+               .ForMember(o => o.Level, opt => opt.MapFrom(d => d.Level))
+               .ForMember(o => o.DisplaySequence, opt => opt.Ignore())
+               .ForMember(o => o.Caption, opt => opt.MapFrom(d => d.Text))
+               .ForMember(o => o.ScorePoint, opt => opt.MapFrom(d => d.ScorePoint))
+               .ForMember(o => o.QuestionOptions, opt => opt.MapFrom(d => d.Options))
+               .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id));
+
+            Mapper.CreateMap<Hire.Domain.Models.Candidate, Candidate>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
+                .ForMember(o => o.Email, opt => opt.MapFrom(d => d.Email))
+                .ForMember(o => o.FirstName, opt => opt.MapFrom(d => d.FirstName))
+                .ForMember(o => o.LastName, opt => opt.MapFrom(d => d.LastName))
+                .ForMember(o => o.Exams, opt => opt.MapFrom(d => d.Exams));
+
+            Mapper.CreateMap<Candidate, Hire.Domain.Models.Candidate>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
+                .ForMember(o => o.Email, opt => opt.MapFrom(d => d.Email))
+                .ForMember(o => o.FirstName, opt => opt.MapFrom(d => d.FirstName))
+                .ForMember(o => o.LastName, opt => opt.MapFrom(d => d.LastName))
+                .ForMember(o => o.Exams, opt => opt.MapFrom(d => d.Exams));
+
             Mapper.CreateMap<Hire.Domain.Models.Exam,Exam>()
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
                 .ForMember(o => o.CompletedOn, opt => opt.MapFrom(d => d.CompletedOn))
                 .ForMember(o => o.Categories, opt => opt.Ignore())
+                .ForMember(o => o.Candidate, opt => opt.MapFrom(d => d.Candidate))
                 .ForMember(o => o.Text, opt => opt.MapFrom(d => "Exam"))
                  .ForMember(o => o.CreatedOn, opt => opt.MapFrom(d => d.CreatedOn))
                  .ForMember(o => o.StartedOn, opt => opt.MapFrom(d => d.StartedOn))
@@ -71,6 +100,7 @@ namespace Datacom.CorporateSys.HireAPI
                 .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
                 .ForMember(o => o.CompletedOn, opt => opt.MapFrom(d => d.CompletedOn))
                 .ForMember(o => o.Categories, opt => opt.Ignore())
+                .ForMember(o => o.Candidate, opt => opt.MapFrom(d => d.Candidate))
                  .ForMember(o => o.CreatedOn, opt => opt.MapFrom(d => d.CreatedOn))
                  .ForMember(o => o.StartedOn, opt => opt.MapFrom(d => d.StartedOn))
                 .ForMember(o => o.Examiner, opt => opt.MapFrom(d => d.Examiner))

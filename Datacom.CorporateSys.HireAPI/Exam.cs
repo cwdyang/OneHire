@@ -40,6 +40,9 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public virtual IList<Exam> Exams { get; set; }
+
+        [DataMember]
+        public string MobileNumber { get; set; }
     }
 
     [DataContract]
@@ -48,6 +51,9 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public string Examiner { get; set; }
+
+        [DataMember]
+        public Candidate Candidate { get; set; }
 
         [DataMember]
         public virtual IList<Question> Questions { get; set; }
@@ -79,6 +85,9 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public virtual IList<Question> Questions { get; set; }
+
+        [DataMember]
+        public Guid ParentQuestionId { get; set; }
     }
 
     [DataContract]
@@ -125,7 +134,10 @@ namespace Datacom.CorporateSys.HireAPI
         public virtual IList<Option> Options { get; set; }
 
         [DataMember]
-        public Guid SelectedOptionId { get; set; }
+        public string SelectedOptionJSON { get; set; }
+
+        [DataMember]
+        public Option SelectedOption { get; set; }
 
 
         [DataMember]

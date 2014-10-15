@@ -5,6 +5,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Datacom.CorporateSys.HireAPI;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
@@ -41,7 +42,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "The Email Address or password provided is incorrect.");
             return View(model);
         }
 
@@ -81,7 +82,16 @@ namespace Datacom.CorporateSys.Hire.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Exam");
+
+                    var candidate = new CandidateService().AddCandidate(new Candidate
+                    {
+                        Email = model.UserName,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        MobileNumber = model.MobileNumber
+                    });
+
+                    return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -191,7 +201,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
                     }
                     catch (Exception)
                     {
-                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+                        ModelState.AddModelError("", String.Format("Unable to create local account with this email address. An account with the name \"{0}\" may already exist.", User.Identity.Name));
                     }
                 }
             }
@@ -280,7 +290,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+                        ModelState.AddModelError("UserName", "Email Address already exists. Please enter a different Email Address.");
                     }
                 }
             }
@@ -372,10 +382,10 @@ namespace Datacom.CorporateSys.Hire.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "Email Address already exists. Please enter a different Email Address.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return "A Email Address for that e-mail address already exists. Please enter a different e-mail address.";
 
                 case MembershipCreateStatus.InvalidPassword:
                     return "The password provided is invalid. Please enter a valid password value.";
@@ -390,7 +400,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
                     return "The password retrieval question provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return "The Email Address provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.ProviderError:
                     return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";

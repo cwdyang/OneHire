@@ -11,7 +11,7 @@ namespace Datacom.CorporateSys.Hire.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("DefaultConnection")
+            : base("dbOneHire")
         {
         }
 
@@ -30,7 +30,7 @@ namespace Datacom.CorporateSys.Hire.Models
     public class RegisterExternalLoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email Address")]
         public string UserName { get; set; }
 
         public string ExternalLoginData { get; set; }
@@ -58,7 +58,7 @@ namespace Datacom.CorporateSys.Hire.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email Address")]
         public string UserName { get; set; }
 
         [Required]
@@ -73,8 +73,20 @@ namespace Datacom.CorporateSys.Hire.Models
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Email Address")]
         public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Mobile Number")]
+        public string MobileNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

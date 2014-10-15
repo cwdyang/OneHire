@@ -1,4 +1,5 @@
-﻿@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
+﻿@using System.Web.UI.WebControls
+@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
 
 @{
     ViewBag.Title = "Datacom internal interview exam";
@@ -20,23 +21,41 @@
                 <p>
                     @if (Model.Exam.CurrentQuestionNumber > 1)
                     {
-                        @Html.ActionLink("<<", "Exam", "Exam", new
+                        @Html.ActionLink("Previous |", "Exam", "Exam", new
                         {
                             // htmlAttributes
                             questionNumber = Model.Exam.CurrentQuestionNumber - 1
                         }, null)
                     }
+                    
+                    @{
+                    var list = new List<int>();
 
+                    for (int i = 1; i <= Model.Exam.Questions.ToList().Count; i++)
+                    {
+
+                        list.Add(i);
+                    }
+                    }
+                    
+                    
+                    Jump to question @Html.DropDownList("ddlQuestionJump", new SelectList(list.AsEnumerable(), Model.Exam.CurrentQuestionNumber), new { @onchange = "this.form.action = 'Exam?questionNumber='+$('#ddlQuestionJump').val(); this.form.submit();" }) 
+                    
 
                     @if (Model.Exam.CurrentQuestionNumber < Model.Exam.Questions.ToList().Count)
                     {
-                        @Html.ActionLink(">>", "Exam", "Exam", new
+                        @Html.ActionLink("| Next", "Exam", "Exam", new
                         {
                             // htmlAttributes
                             questionNumber = Model.Exam.CurrentQuestionNumber + 1
                         }, null)
                     }
+                    
+                    
 
+
+                    
+                    
                 </p>
             </fieldset>
     </article>
@@ -51,7 +70,7 @@
     </p>
 
     <p>
-        Total Questions = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count)
+        Total Questions (Answered) = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count) (@Html.DisplayFor(model => model.Exam.Questions.Where(x=>x.SelectedOption!=null).ToList().Count))
     </p>
 
 </aside>

@@ -13,11 +13,16 @@ namespace Datacom.CorporateSys.Hire.Controllers
 {
     public class ExamController : Controller
     {
+        protected ExamViewModel ViewModel
+        {
+            get { return Session.GetDataFromSession<ExamViewModel>(SessionConstants.ExamViewModel); }
+            set { Session.SetDataToSession<ExamViewModel>(SessionConstants.ExamViewModel, value); }
+        }
+
         public ActionResult Exam(int? questionNumber)
         {
-            var viewModel = Session.GetDataFromSession<ExamViewModel>(SessionConstants.ExamViewModel);
 
-            if (viewModel == null)
+            if (ViewModel == null)
             {
                 var candidateService = new CandidateService();
                 var examService = new ExamService();
@@ -25,28 +30,57 @@ namespace Datacom.CorporateSys.Hire.Controllers
                 var candidate = candidateService.GetCandidate("davidy@datacom.co.nz");
 
                 if (candidate == null)
-                    return new EmptyResult(); //preferred
+                    return new HttpStatusCodeResult(404); //return new EmptyResult(); //preferred
 
                 var exam = examService.GetLatestOpenExamWithQuestionOptions(candidate.Id);
 
                 if (exam == null)
-                    return new EmptyResult(); //preferred
+                    return new HttpStatusCodeResult(404); //return new EmptyResult(); //preferred
 
                 exam.CurrentQuestionId = exam.Questions.First().Id;
-                
-                viewModel = new ExamViewModel(candidate, exam);
-                Session.SetDataToSession<ExamViewModel>(SessionConstants.ExamViewModel, viewModel);
+
+                ViewModel = new ExamViewModel(candidate, exam);
+
             }
 
-            viewModel.Exam.CurrentQuestionNumber = (questionNumber) ?? 1;
+            ViewModel.Exam.CurrentQuestionNumber = (questionNumber) ?? 1;
 
-            return View(viewModel);
+            return View(ViewModel);
         }
 
         [HttpPost]
         public ActionResult AnswerQuestion(Question question)
         {
-            return new EmptyResult();
+            if (ViewModel == null)
+            {
+                return new HttpStatusCodeResult(404);
+            }
+
+            Option optionSelected = null;
+
+            try
+            {
+                optionSelected = Newtonsoft.Json.JsonConvert.DeserializeObject<Option>(question.SelectedOptionJSON);
+
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(404);
+            }
+            
+            var parentQuestion = ViewModel.Exam.Questions.First(x => x.Id == optionSelected.ParentQuestionId);
+
+            var answer = new Answer { AnswerText = optionSelected.Text, Exam = ViewModel.Exam, Id = Guid.NewGuid(), Level = parentQuestion.Level, Option = optionSelected, ScorePoint = parentQuestion.ScorePoint, Text = optionSelected.Text };
+
+            var examService = new ExamService();
+
+            examService.AddAnswer(answer);
+
+            parentQuestion.SelectedOption = optionSelected;
+
+
+
+            return Redirect(Request.UrlReferrer.ToString());
         }
     }
 }

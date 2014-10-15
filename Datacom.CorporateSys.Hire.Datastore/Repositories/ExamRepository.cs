@@ -80,6 +80,10 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
         public Answer AddAnswer(Answer answer)
         {
             //prevents re-insertion
+
+            answer.QuestionOption = DbContext.QuestionOptions.First(x => x.Id == answer.QuestionOption.Id);
+            answer.Exam = DbContext.Exams.First(x => x.Id == answer.Exam.Id);
+
             DbContext.QuestionOptions.Attach(answer.QuestionOption);
             DbContext.Exams.Attach(answer.Exam);
 
