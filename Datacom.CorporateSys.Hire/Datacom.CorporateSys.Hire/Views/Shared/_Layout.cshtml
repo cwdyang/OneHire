@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <title>@ViewBag.Title - Datacom Interview Exam</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -12,7 +12,7 @@
         <header>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Exam")</p>
+                    <p class="site-title">@Html.ActionLink("Datacom", "Index", "Home")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -20,10 +20,10 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Exam")</li>
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("Your Exam", "Exam", "Exam")</li>
                             <li>@Html.ActionLink("Your Categories", "CategoryTree", "Exam")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Exam")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         </ul>
                     </nav>
                 </div>
@@ -38,7 +38,7 @@
         <footer>
             <div class="content-wrapper">
                 <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                    <p>&copy; @DateTime.Now.Year - Datacom Interview Exam</p>
                 </div>
             </div>
         </footer>

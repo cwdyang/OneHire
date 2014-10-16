@@ -28,7 +28,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
 
             if (ViewModel == null || ViewModel.Candidate == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login", "Account");
             }
             else
             {
@@ -77,7 +77,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
         {
 
             if (ViewModel == null|| ViewModel.Candidate == null )
-                return RedirectToAction("Exam", "Exam");
+                return RedirectToAction("Login", "Account");
 
             if( ViewModel.Exam == null)
             {
