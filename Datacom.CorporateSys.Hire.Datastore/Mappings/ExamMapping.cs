@@ -26,7 +26,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Mappings
             {
                 c.MapLeftKey("ExamId");
                 c.MapRightKey("QuestionId");
-                c.ToTable("ExamQuestion");
+                c.ToTable("ExamQuestion","Hire");
             });
 
             //many to many Exam<>Category
@@ -34,7 +34,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Mappings
             {
                 c.MapLeftKey("ExamId");
                 c.MapRightKey("CategoryId");
-                c.ToTable("ExamCategory");
+                c.ToTable("ExamCategory","Hire");
             });
 
             //one to many Candidate>Exam

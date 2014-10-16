@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Datacom.CorporateSys.Hire;
 using Datacom.CorporateSys.Hire.Controllers;
 using Answer = Datacom.CorporateSys.HireAPI.Answer;
+using Category = Datacom.CorporateSys.HireAPI.Category;
 using Exam = Datacom.CorporateSys.HireAPI.Exam;
 
 
@@ -63,6 +64,15 @@ namespace Datacom.CorporateSys.Hire.Tests.Controllers
             Assert.IsNotNull(exam);
         }
 
-       
+        [TestMethod]
+        public void GetCategories()
+        {
+            var examService = new ExamService();
+
+            var categories = examService.GetCategories(Enumerable.Empty<Guid>().ToList());
+        }
     }
+
+
+     
 }

@@ -105,8 +105,29 @@ namespace Datacom.CorporateSys.HireAPI
                  .ForMember(o => o.StartedOn, opt => opt.MapFrom(d => d.StartedOn))
                 .ForMember(o => o.Examiner, opt => opt.MapFrom(d => d.Examiner))
                 .ForMember(o => o.Questions, opt => opt.MapFrom(d => d.Questions));
+
+            Mapper.CreateMap<Category, Hire.Domain.Models.Category>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
+                .ForMember(o => o.Caption, opt => opt.MapFrom(d => d.Text));
+
+            Mapper.CreateMap<Hire.Domain.Models.BaseObject, Category>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
+                .ForMember(o => o.Text, opt => opt.MapFrom(d => d.Caption));
+
+            Mapper.CreateMap<Hire.Domain.Models.Category, Category>()
+                .ForMember(o => o.Id, opt => opt.MapFrom(d => d.Id))
+                .ForMember(o => o.Categories, opt => opt.MapFrom(d => d.BaseObjects))
+                .ForMember(o => o.Text, opt => opt.MapFrom(d => d.Caption));
         }
 
+        public bool HasOpenExams(Guid candidateGuid)
+        {
+            using (var examRepo = new ExamRepository())
+            {
+                var openExam = examRepo.GetLatestOpenExam(candidateGuid, false, false);
+                return (openExam != null);
+            }
+        }
 
         public Exam GetLatestOpenExamWithQuestionOptions(Guid candidateGuid)
         {
@@ -147,6 +168,89 @@ namespace Datacom.CorporateSys.HireAPI
                 var questions = examRepo.AddAnswer(Mapper.Map<Hire.Domain.Models.Answer>(answer));
             }
             return answer;
+        }
+
+        public Exam CompleteExam(Exam exam,Candidate candidate)
+        {
+            var message = new StringBuilder();
+
+            exam.TotalPossiblePoints = exam.Questions.Sum(x => x.ScorePoint);
+            exam.TotalScoredPoints = exam.Questions.Where(x => x.SelectedOption!=null && x.SelectedOption.IsSelected).Sum(x => x.ScorePoint);
+
+            message.Append(string.Format("Interview exam results for: {0} {1} {2}",
+                candidate.FirstName , candidate.LastName,"<br/><br/>"));
+
+            message.Append(string.Format("Interviewee Email: {0}{1}",
+                candidate.Email, "<br/><br/>"));
+            message.Append(string.Format("Exam total marks: {0}/{1} points.{2}",
+               exam.TotalScoredPoints,
+               exam.TotalPossiblePoints,
+               "<br/><br/>"));
+
+            using (var examRepo = new ExamRepository())
+            {
+                examRepo.CompleteExam(exam.Id);
+            }
+
+            var categoryResults = exam.Questions.GroupBy(x=>x.CategoryName).Select(
+                x => new
+                {
+                    CategoryName = x.Key,
+                    TotalPossiblePoints = x.Sum(y=>y.ScorePoint),
+                    TotalScoredPoints = x.Where(y=>y.SelectedOption!=null && y.SelectedOption.IsSelected).Sum(y=>y.ScorePoint)
+                }
+            );
+
+            categoryResults.ToList().ForEach(x=> message.Append(string.Format("Category: {0} marks: {1}/{2} points.{3}",
+                x.CategoryName,
+                x.TotalScoredPoints,
+                x.TotalPossiblePoints,
+                "<br/><br/>")));
+
+            sendMail(exam.Examiner, "examService@datacom.co.nz",
+                "Interview exam results for: " + candidate.FirstName + " " + candidate.LastName + " Email: " + candidate.Email, 
+                message.ToString());
+            //categoryResults.ToList().ForEach(x=>x.);
+
+            return exam;
+        }
+
+        public static void sendMail(string to, string from, string subject, string body)
+        {
+            var msg = new System.Net.Mail.MailMessage(from, to);
+            msg.Subject = subject;
+            msg.IsBodyHtml = true;
+            msg.Body = body;
+            msg.IsBodyHtml = true;
+            System.Net.Mail.SmtpClient oSmtpClient = new System.Net.Mail.SmtpClient("localhost");
+            //https://social.technet.microsoft.com/Forums/en-US/1a84a06a-f1c8-40b4-ace8-1e264f218aa1/550-571-unable-to-relay-for?forum=exchangesvrsecuremessaginglegacy
+            oSmtpClient.UseDefaultCredentials = true;
+            oSmtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis;
+            //550 5.7.1 Unable to relay for
+            oSmtpClient.Send(msg);
+        }
+
+        public List<Category> GetCategories(List<Guid> categoryIds)
+        {
+            var list = Enumerable.Empty<Category>().ToList();
+
+            using (var examRepo = new ExamRepository())
+            {
+                var categories = examRepo.GetCategories(categoryIds);
+                list = Mapper.Map<List<Category>>(categories);
+            }
+
+            return list;
+        }
+
+
+        public Exam GenerateExam(List<Guid> categoryIds,Guid candidateGuid,string examiner)
+        {
+            using (var examRepo = new ExamRepository())
+            {
+                var exam = examRepo.GenerateExam(categoryIds, candidateGuid, examiner);
+                return Mapper.Map<Exam>(exam);
+            }
         }
     }
 }

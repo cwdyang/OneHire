@@ -57,9 +57,9 @@
     <Compile Include="Mappings\BaseObjectMapping.cs" />
     <Compile Include="Mappings\AnswerMapping.cs" />
     <Compile Include="Mappings\QuestionOptionMapping.cs" />
-    <Compile Include="Migrations\201410122210399_start.cs" />
-    <Compile Include="Migrations\201410122210399_start.Designer.cs">
-      <DependentUpon>201410122210399_start.cs</DependentUpon>
+    <Compile Include="Migrations\201410161043477_InitialMigrations.cs" />
+    <Compile Include="Migrations\201410161043477_InitialMigrations.Designer.cs">
+      <DependentUpon>201410161043477_InitialMigrations.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,11 +71,6 @@
     <Compile Include="Repositories\OneHireBaseRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201410122210399_start.resx">
-      <DependentUpon>201410122210399_start.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -84,6 +79,11 @@
       <Project>{B5E1090F-B323-43A5-A53B-B9269D03EBFC}</Project>
       <Name>Datacom.CorporateSys.Hire.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201410161043477_InitialMigrations.resx">
+      <DependentUpon>201410161043477_InitialMigrations.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

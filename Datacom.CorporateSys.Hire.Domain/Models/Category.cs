@@ -29,6 +29,7 @@ namespace Datacom.CorporateSys.Hire.Domain.Models
         //one to many Category>Question
         public virtual ICollection<Question> Questions { get; set; }
 
+
         //many to many Exam<>Questions , questions used in exams
         //lazy loading 
         public virtual ICollection<Exam> Exams { get; set; }

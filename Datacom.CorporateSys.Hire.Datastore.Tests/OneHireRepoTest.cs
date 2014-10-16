@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Datacom.CorporateSys.Hire.Datastore.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,6 +12,15 @@ namespace Datacom.CorporateSys.Hire.Datastore.Tests
         public void Setup()
         {
             
+        }
+
+        [TestMethod]
+        public void GetCategories()
+        {
+            using (var examRepo = new ExamRepository())
+            {
+                var categories = examRepo.GetCategories(Enumerable.Empty<Guid>().ToList());
+            }
         }
 
         [TestMethod]

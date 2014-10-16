@@ -13,6 +13,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
     {
         string ConnectionString { get; }
 
+
         IDbSet<BaseObject> BaseObjects { get; set; }
         IDbSet<Question> Questions { get; set; }
         IDbSet<Category> Categories { get; set; }

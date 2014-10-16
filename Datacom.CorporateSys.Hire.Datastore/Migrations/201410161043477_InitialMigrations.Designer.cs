@@ -7,13 +7,13 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.0-20911")]
-    public sealed partial class start : IMigrationMetadata
+    public sealed partial class InitialMigrations : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(start));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigrations));
         
         string IMigrationMetadata.Id
         {
-            get { return "201410122210399_start"; }
+            get { return "201410161043477_InitialMigrations"; }
         }
         
         string IMigrationMetadata.Source

@@ -62,6 +62,8 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
 			Configuration.LazyLoadingEnabled = false;
             Database.SetInitializer<OneHireMainContext>(null);
 
+            
+
             /*
              * performance 
             Configuration.LazyLoadingEnabled = false;
@@ -93,7 +95,9 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
             
         }
 
-        
+
+
+        public static string SchemaName = "Hire";
 
     }
 

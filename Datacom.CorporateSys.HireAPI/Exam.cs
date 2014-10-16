@@ -55,6 +55,13 @@ namespace Datacom.CorporateSys.HireAPI
         [DataMember]
         public Candidate Candidate { get; set; }
 
+
+        public Exam()
+        {
+            Questions = new List<Question>();
+            Categories = new List<Category>();
+        }
+
         [DataMember]
         public virtual IList<Question> Questions { get; set; }
 
@@ -75,11 +82,22 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public DateTimeOffset? CompletedOn { get; set; }
+
+        [DataMember]
+        public int TotalPossiblePoints { get; set; }
+
+        [DataMember]
+        public int TotalScoredPoints { get; set; }
     }
 
     [DataContract]
     public class Option:BaseObject
     {
+        public Option()
+        {
+            Questions = new List<Question>();
+        }
+
         [DataMember]
         public bool IsSelected { get; set; }
 
@@ -124,6 +142,12 @@ namespace Datacom.CorporateSys.HireAPI
         [DataMember]
         public int ScorePoint { get; set; }
 
+        public Question()
+        {
+            Questions = new List<Question>();
+            Options = new List<Option>();
+        }
+
         [DataMember]
         public virtual IList<Question> Questions { get; set; }
 
@@ -151,7 +175,23 @@ namespace Datacom.CorporateSys.HireAPI
         [DataMember]
         public virtual IList<Question> Questions { get; set; }
 
+        [DataMember]
+        public virtual IList<Category> Categories { get; set; }
 
+        [DataMember]
+        public bool IsSelected { get; set; }
+
+        public Category()
+        {
+            Questions = new List<Question>(); 
+            Categories = new List<Category>();
+        }
+
+        [DataMember]
+        public int TotalPossiblePoints { get; set; }
+
+        [DataMember]
+        public int TotalScoredPoints { get; set; }
     }
 
 }

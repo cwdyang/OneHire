@@ -46,7 +46,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             context.DeleteAll<Question>();
             context.DeleteAll<Exam>();
             context.DeleteAll<Category>();
-            context.DeleteAll<Candidate>();
+            //context.DeleteAll<Candidate>();
             context.DeleteAll<BaseObject>();
 
 
@@ -139,7 +139,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 MobileNumber = "021003533"
             };
 
-            context.Candidates.AddOrUpdate(candidate);
+            //context.Candidates.AddOrUpdate(candidate);
 
             var q1 = new Question
             {
@@ -150,7 +150,9 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 DisplaySequence = 1,
                 CreatedOn = DateTimeOffset.Now,
                 IsEnabled = true,
-                UpdatedBy = "davidy"
+                UpdatedBy = "davidy",
+                Level = 4,
+                ScorePoint = 5
             };
 
             
@@ -182,7 +184,10 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 IsEnabled = true,
                 UpdatedBy = "davidy",
                 ParentBaseObject = q1,
-                QuestionOption = q1_1
+                QuestionOption = q1_1,
+                Level = 4,
+                ScorePoint = 5
+
             };
 
             context.Questions.AddOrUpdate(q1a);
@@ -295,8 +300,10 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
                 CreatedOn = DateTimeOffset.Now,
                 IsEnabled = true,
                 UpdatedBy = "davidy",
-                ParentBaseObject = q1,
-                QuestionOption = q1_1
+                ParentBaseObject = null,
+                QuestionOption = null,
+                Level = 4,
+                ScorePoint = 3
             };
 
             context.Questions.AddOrUpdate(q2);
@@ -328,7 +335,97 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             context.QuestionOptions.AddOrUpdate(q2_1);
             context.QuestionOptions.AddOrUpdate(q2_2);
 
-            var questions = new HashSet<Question> {q1,q2};
+            var q3 = new Question
+            {
+                Id = Guid.NewGuid(),
+                DataType = "RadioButtonGroup",
+                Category = catDotNet,
+                Caption = "Question 3",
+                DisplaySequence = 3,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                ParentBaseObject = null,
+                QuestionOption = null,
+                Level = 4,
+                ScorePoint = 7
+            };
+
+            context.Questions.AddOrUpdate(q3);
+
+            var q3_1 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Incorrect",
+                DisplaySequence = 1,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q3,
+                IsSelected = false
+            };
+
+            var q3_2 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Correct",
+                DisplaySequence = 3,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q3,
+                IsSelected = true
+            };
+
+            context.QuestionOptions.AddOrUpdate(q3_1);
+            context.QuestionOptions.AddOrUpdate(q3_2);
+
+            var q4 = new Question
+            {
+                Id = Guid.NewGuid(),
+                DataType = "RadioButtonGroup",
+                Category = catDotNet,
+                Caption = "Question 4",
+                DisplaySequence = 4,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                ParentBaseObject = null,
+                QuestionOption = null,
+                Level = 4,
+                ScorePoint = 2
+            };
+
+            context.Questions.AddOrUpdate(q4);
+
+            var q4_1 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Incorrect",
+                DisplaySequence = 1,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q4,
+                IsSelected = false
+            };
+
+            var q4_2 = new QuestionOption()
+            {
+                Id = Guid.NewGuid(),
+                Caption = "Correct",
+                DisplaySequence = 4,
+                CreatedOn = DateTimeOffset.Now,
+                IsEnabled = true,
+                UpdatedBy = "davidy",
+                Question = q4,
+                IsSelected = true
+            };
+
+            context.QuestionOptions.AddOrUpdate(q4_1);
+            context.QuestionOptions.AddOrUpdate(q4_2);
+
+            var questions = new HashSet<Question> {q1,q2,q3,q4};
             var categories = new HashSet<Category>{catProgAdvanced};
 
             var exam = new Exam

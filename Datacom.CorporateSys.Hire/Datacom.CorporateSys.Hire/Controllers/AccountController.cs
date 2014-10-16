@@ -5,6 +5,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Datacom.CorporateSys.Hire.ViewModels;
 using Datacom.CorporateSys.HireAPI;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
@@ -16,7 +17,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
 {
     [Authorize]
     [InitializeSimpleMembership]
-    public class AccountController : Controller
+    public class AccountController : ExamController
     {
         //
         // GET: /Account/Login
@@ -36,12 +37,25 @@ namespace Datacom.CorporateSys.Hire.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                var candidate = new CandidateService().GetCandidate(model.UserName);
+
+
+
+                if (candidate != null)
+                {
+                    base.ViewModel = new ExamViewModel(candidate, null, null);
+                    if (new ExamService().HasOpenExams(candidate.Id))
+                        return RedirectToAction("Exam", "Exam");
+                    else
+                        return RedirectToAction("CategoryTree", "Exam");
+                }
+
             }
 
-            // If we got this far, something failed, redisplay form
+
             ModelState.AddModelError("", "The Email Address or password provided is incorrect.");
             return View(model);
         }
@@ -55,7 +69,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Exam");
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -85,11 +99,16 @@ namespace Datacom.CorporateSys.Hire.Controllers
 
                     var candidate = new CandidateService().AddCandidate(new Candidate
                     {
+                        Id = Guid.NewGuid(),
                         Email = model.UserName,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         MobileNumber = model.MobileNumber
                     });
+
+                    if(base.ViewModel==null)
+                        ViewModel = new ExamViewModel(candidate,null,null);
+
 
                     return RedirectToAction("Index", "Home");
                 }

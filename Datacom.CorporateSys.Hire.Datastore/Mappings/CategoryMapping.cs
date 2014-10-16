@@ -15,6 +15,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Mappings
         public CategoryMapping()
         {
             ToTable("Category", "Hire");
+
         }
     }
 }

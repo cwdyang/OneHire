@@ -1,0 +1,60 @@
+﻿@using Datacom.CorporateSys.HireAPI
+@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
+           
+@{
+    ViewBag.Title = "Exam categories";
+}
+<!--http://www.mikesdotnetting.com/Article/218/Managing-Checkboxes-And-Radios-In-ASP.NET-Razor-Web-Pages-->
+
+@helper TreeView(IEnumerable<Category> categories)
+{
+    foreach (var category in categories)
+    {
+        <li style="list-style-type: none;" >
+           
+            <span>
+                @Html.CheckBox(category.Id.ToString(),false)
+                @category.Text
+            </span>
+            @if (category.Categories.Count > 0)
+            { 
+                <ul>
+                    @TreeView(category.Categories)
+                </ul>
+            }
+        </li>
+    }
+}
+
+@using (Html.BeginForm("GenerateExam", "Exam", FormMethod.Post))
+{
+<article>
+    <p><h3>@ViewBag.Title</h3></p>
+    <fieldset>
+        <ul id="continentFolders">
+            @if (Model.Candidate == null)
+            {
+                <li>No categories available.</li>
+            }
+            else
+            {
+                @TreeView(Model.Categories)
+            }
+
+        </ul>
+    </fieldset>
+    
+    <p>
+        <input type='submit' value='Generate Exam' />
+    </p>
+</article>
+}
+
+<aside>
+    <p>
+        @if (Model.Candidate != null)
+        {
+            <h3>Candidate: @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+        }
+    </p>
+</aside>

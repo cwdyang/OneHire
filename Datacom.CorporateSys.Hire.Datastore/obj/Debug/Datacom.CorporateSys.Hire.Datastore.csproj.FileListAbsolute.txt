@@ -10,5 +10,5 @@ c:\development\onehire\Datacom.CorporateSys.Hire.Datastore\obj\Debug\Datacom.Cor
 c:\development\onehire\Datacom.CorporateSys.Hire.Datastore\obj\Debug\Datacom.CorporateSys.Hire.Datastore.pdb
 c:\development\onehire\Datacom.CorporateSys.Hire.Datastore\bin\Debug\EntityFramework.SqlServer.dll
 c:\development\onehire\Datacom.CorporateSys.Hire.Datastore\bin\Debug\EntityFramework.SqlServer.xml
-C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\Debug\Datacom.CorporateSys.Hire.Datastore.Migrations.start.resources
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\Debug\Datacom.CorporateSys.Hire.Datastore.Migrations.InitialMigrations.resources
 C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\Debug\Datacom.CorporateSys.Hire.Datastore.csproj.GenerateResource.Cache

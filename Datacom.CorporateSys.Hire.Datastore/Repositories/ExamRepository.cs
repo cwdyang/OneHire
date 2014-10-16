@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Linq;
@@ -92,6 +93,60 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             DbContext.SaveChanges();
 
             return answer;
+        }
+
+        public List<Category> GetCategories(List<Guid> categoryIds)
+        {
+            //3 levels deep, can be recursive
+            var list = GetCategoriesInternal(categoryIds).ToList();
+
+            return list;
+        }
+
+        private IQueryable<Category> GetCategoriesInternal(List<Guid> categoryIds)
+        {
+            return
+                DbContext.Categories.Include(x => x.BaseObjects.Select(y => y.BaseObjects.Select(z => z.BaseObjects)))
+                    .Include(s => s.Questions)
+                    .Where(a => categoryIds.Contains(a.Id) || (categoryIds.Count == 0 && a.ParentId == null));
+        }
+
+
+        public Exam GenerateExam(List<Guid> categoryIds, Guid candidateGuid, string examiner)
+        {
+            var candidate = DbContext.Candidates.First(x => x.Id == candidateGuid);
+            var categories = GetCategoriesInternal(categoryIds).Include(s=>s.Questions).ToList();
+
+            var questionList = new List<Question>();
+
+            foreach (var category in categories)
+            {
+
+                var questions = category.Questions.Where(x => x.ParentId == null).Take(int.Parse(ConfigurationSettings.AppSettings["QuestionsPerCategory"]));
+
+                questionList.AddRange(questions);
+            }
+
+            var exam = new Exam {Examiner = examiner, Candidate = candidate, Id = Guid.NewGuid(), Questions = questionList, Categories = categories,CreatedOn = DateTime.Now};
+
+            DbContext.Candidates.Attach(candidate);
+            DbContext.Exams.Add(exam);
+            
+            DbContext.SaveChanges();
+
+            return exam;
+
+        }
+
+        public Exam CompleteExam(Guid examId)
+        {
+            var exam = DbContext.Exams.First(x => x.Id == examId);
+
+            exam.CompletedOn = DateTimeOffset.Now;
+
+            DbContext.SaveChanges();
+
+            return exam;
         }
     }
 }
