@@ -2,22 +2,31 @@
 @model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
            
 @{
-    ViewBag.Title = "Exam categories";
+    ViewBag.Title = "Select Exam categories";
 }
 <!--http://www.mikesdotnetting.com/Article/218/Managing-Checkboxes-And-Radios-In-ASP.NET-Razor-Web-Pages-->
+<script>
+    function checkUncheckChildCheckBoxes(checkbox) {
+        var li = $("li#" + checkbox.name);
+        if (li != null) {
+            li.find("input[type=checkbox]").each(function () { this.checked = checkbox.checked; });
+        }
+    }
+</script>
 
 @helper TreeView(IEnumerable<Category> categories)
 {
     foreach (var category in categories)
     {
-        <li style="list-style-type: none;" >
-           
+        <!--This is crucial for checkUncheckChildCheckBoxes() dont mess with the li's id -->
+       <li style="list-style-type: none;" id="@category.Id">
+
             <span>
-                @Html.CheckBox(category.Id.ToString(),false)
+                @Html.CheckBox(category.Id.ToString(), false, new { @onchange = "checkUncheckChildCheckBoxes(this);" })
                 @category.Text
             </span>
             @if (category.Categories.Count > 0)
-            { 
+            {
                 <ul>
                     @TreeView(category.Categories)
                 </ul>

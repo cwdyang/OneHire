@@ -122,16 +122,28 @@ namespace Datacom.CorporateSys.Hire.Controllers
 
             var answer = new Answer { AnswerText = optionSelected.Text, Exam = ViewModel.Exam, Id = Guid.NewGuid(), Level = parentQuestion.Level, Option = optionSelected, ScorePoint = parentQuestion.ScorePoint, Text = optionSelected.Text };
 
-            
-
             _examService.AddAnswer(answer);
 
             parentQuestion.SelectedOption = optionSelected;
 
-            if (ViewModel.Exam.Questions.All(x=>x.SelectedOption!=null))
-                ViewModel.Exam = _examService.CompleteExam(ViewModel.Exam,ViewModel.Candidate);
+            if (ViewModel.Exam.Questions.All(x => x.SelectedOption != null))
+                return CompleteExam();
 
-            return Redirect(Request.UrlReferrer.ToString());
+            ViewModel.Exam.CurrentQuestionNumber += (ViewModel.Exam.CurrentQuestionNumber ==
+                                                     ViewModel.Exam.Questions.Count)
+                ? 0
+                : 1;
+
+            //return Redirect(Request.UrlReferrer.ToString());
+            return RedirectToAction("Exam", "Exam", new { questionNumber = ViewModel.Exam.CurrentQuestionNumber});
+        }
+
+        private ActionResult CompleteExam()
+        {
+            _examService.CompleteExam(ViewModel.Exam, ViewModel.Candidate);
+            ViewModel.Exam = null;
+            ViewModel.Categories = null;
+            return RedirectToAction("CategoryTree", "Exam");
         }
     }
 }

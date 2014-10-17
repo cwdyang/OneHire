@@ -176,15 +176,21 @@ namespace Datacom.CorporateSys.HireAPI
 
             exam.TotalPossiblePoints = exam.Questions.Sum(x => x.ScorePoint);
             exam.TotalScoredPoints = exam.Questions.Where(x => x.SelectedOption!=null && x.SelectedOption.IsSelected).Sum(x => x.ScorePoint);
+            exam.TotalQuestionsAsked = exam.Questions.Count();
+            exam.TotalQuestionsAnswered = exam.Questions.Count(x => x.SelectedOption != null);
+            exam.TotalQuestionsAnsweredCorrectly = exam.Questions.Count(x => x.SelectedOption != null && x.SelectedOption.IsSelected);
 
             message.Append(string.Format("Interview exam results for: {0} {1} {2}",
                 candidate.FirstName , candidate.LastName,"<br/><br/>"));
 
             message.Append(string.Format("Interviewee Email: {0}{1}",
                 candidate.Email, "<br/><br/>"));
-            message.Append(string.Format("Exam total marks: {0}/{1} points.{2}",
+            message.Append(string.Format("Exam total marks: {0}/{1} points. {2}({3})/{4} (correctly) answered.{5}",
                exam.TotalScoredPoints,
                exam.TotalPossiblePoints,
+               exam.TotalQuestionsAnswered,
+               exam.TotalQuestionsAnsweredCorrectly,
+               exam.TotalQuestionsAsked,
                "<br/><br/>"));
 
             using (var examRepo = new ExamRepository())
@@ -196,21 +202,26 @@ namespace Datacom.CorporateSys.HireAPI
                 x => new
                 {
                     CategoryName = x.Key,
+                    TotalQuestionsAsked = x.Count(),
+                    TotalQuestionsAnswered = x.Count(y => y.SelectedOption != null),
+                    TotalQuestionsAnsweredCorrectly = x.Count(y => y.SelectedOption != null && y.SelectedOption.IsSelected),
                     TotalPossiblePoints = x.Sum(y=>y.ScorePoint),
                     TotalScoredPoints = x.Where(y=>y.SelectedOption!=null && y.SelectedOption.IsSelected).Sum(y=>y.ScorePoint)
                 }
             );
 
-            categoryResults.ToList().ForEach(x=> message.Append(string.Format("Category: {0} marks: {1}/{2} points.{3}",
+            categoryResults.ToList().ForEach(x => message.Append(string.Format("Category: {0} marks: {1}/{2} points. {3} ({4})/{5} (correctly) answered.{6}",
                 x.CategoryName,
                 x.TotalScoredPoints,
                 x.TotalPossiblePoints,
+                x.TotalQuestionsAnswered,
+                x.TotalQuestionsAnsweredCorrectly,
+                x.TotalQuestionsAsked,
                 "<br/><br/>")));
 
-            sendMail(exam.Examiner, "examService@datacom.co.nz",
+            sendMail(exam.Examiner, "davidy@datacom.co.nz",
                 "Interview exam results for: " + candidate.FirstName + " " + candidate.LastName + " Email: " + candidate.Email, 
                 message.ToString());
-            //categoryResults.ToList().ForEach(x=>x.);
 
             return exam;
         }
@@ -222,10 +233,10 @@ namespace Datacom.CorporateSys.HireAPI
             msg.IsBodyHtml = true;
             msg.Body = body;
             msg.IsBodyHtml = true;
-            System.Net.Mail.SmtpClient oSmtpClient = new System.Net.Mail.SmtpClient("localhost");
+            System.Net.Mail.SmtpClient oSmtpClient = new System.Net.Mail.SmtpClient("dnzakex2.datacom.co.nz");
             //https://social.technet.microsoft.com/Forums/en-US/1a84a06a-f1c8-40b4-ace8-1e264f218aa1/550-571-unable-to-relay-for?forum=exchangesvrsecuremessaginglegacy
             oSmtpClient.UseDefaultCredentials = true;
-            oSmtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis;
+            oSmtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
             //550 5.7.1 Unable to relay for
             oSmtpClient.Send(msg);
         }

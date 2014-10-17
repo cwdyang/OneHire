@@ -88,6 +88,15 @@ namespace Datacom.CorporateSys.HireAPI
 
         [DataMember]
         public int TotalScoredPoints { get; set; }
+
+        [DataMember]
+        public int TotalQuestionsAsked { get; set; }
+
+        [DataMember]
+        public int TotalQuestionsAnswered { get; set; }
+
+        [DataMember]
+        public int TotalQuestionsAnsweredCorrectly { get; set; }
     }
 
     [DataContract]
