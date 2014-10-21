@@ -19,5 +19,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
         Exam CompleteExam(Guid examId);
 
         List<Category> GetCategories(List<Guid> categoryIds);
+
+        List<Question> GetQuestions(List<Guid> questionIds);
     }
 }

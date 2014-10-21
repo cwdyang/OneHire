@@ -140,9 +140,12 @@ namespace Datacom.CorporateSys.HireAPI
                 examToReturn = Mapper.Map<Exam>(openExam);
             }
 
-            var i = 1;
-            var list = examToReturn.Questions.ToList().OrderBy(x=>x.Sequence);
-            list.ToList().ForEach(x => { x.Sequence = i++; });
+            if (examToReturn != null)
+            {
+                var i = 1;
+                var list = examToReturn.Questions.ToList().OrderBy(x => x.Sequence);
+                list.ToList().ForEach(x => { x.Sequence = i++; });
+            }
 
             return examToReturn;
         }
@@ -180,23 +183,39 @@ namespace Datacom.CorporateSys.HireAPI
             exam.TotalQuestionsAnswered = exam.Questions.Count(x => x.SelectedOption != null);
             exam.TotalQuestionsAnsweredCorrectly = exam.Questions.Count(x => x.SelectedOption != null && x.SelectedOption.IsSelected);
 
-            message.Append(string.Format("Interview exam results for: {0} {1} {2}",
-                candidate.FirstName , candidate.LastName,"<br/><br/>"));
-
-            message.Append(string.Format("Interviewee Email: {0}{1}",
-                candidate.Email, "<br/><br/>"));
-            message.Append(string.Format("Exam total marks: {0}/{1} points. {2}({3})/{4} (correctly) answered.{5}",
-               exam.TotalScoredPoints,
-               exam.TotalPossiblePoints,
-               exam.TotalQuestionsAnswered,
-               exam.TotalQuestionsAnsweredCorrectly,
-               exam.TotalQuestionsAsked,
-               "<br/><br/>"));
+            Exam examReturend = null;
 
             using (var examRepo = new ExamRepository())
             {
-                examRepo.CompleteExam(exam.Id);
+                examReturend = Mapper.Map<Exam>( examRepo.CompleteExam(exam.Id));
             }
+
+            exam.CompletedOn = examReturend.CompletedOn;
+
+            message.Append(string.Format("Interview exam results for: {0} {1} {2}",
+                candidate.FirstName, candidate.LastName, "<br/><br/>"));
+
+            message.Append(string.Format("Candidate email: {0}{1}",
+                candidate.Email, "<br/><br/>"));
+
+            message.Append("<hr>");
+
+            message.Append(string.Format("Exam {2}Start: {0}{2}Finish{1} {2}{2}",
+               exam.StartedOn.GetValueOrDefault().ToString("yyyy-MMM-dd HH:mm:ss"),
+               exam.CompletedOn.GetValueOrDefault().ToString("yyyy-MMM-dd HH:mm:ss"),
+               "<br/>"));
+
+            message.Append(string.Format("Total Score: {0} / {1} Points. {2}",
+               exam.TotalScoredPoints,
+               exam.TotalPossiblePoints,
+               "<br/><br/>"));
+
+            message.Append(string.Format("Questions Asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}{4}",
+                exam.TotalQuestionsAsked,
+                exam.TotalQuestionsAnswered,
+                exam.TotalQuestionsAnsweredCorrectly,
+              "<br/>","<hr>"));
+
 
             var categoryResults = exam.Questions.GroupBy(x=>x.CategoryName).Select(
                 x => new
@@ -210,14 +229,27 @@ namespace Datacom.CorporateSys.HireAPI
                 }
             );
 
-            categoryResults.ToList().ForEach(x => message.Append(string.Format("Category: {0} marks: {1}/{2} points. {3} ({4})/{5} (correctly) answered.{6}",
-                x.CategoryName,
-                x.TotalScoredPoints,
-                x.TotalPossiblePoints,
-                x.TotalQuestionsAnswered,
-                x.TotalQuestionsAnsweredCorrectly,
-                x.TotalQuestionsAsked,
-                "<br/><br/>")));
+            message.Append("<hr>");
+
+            categoryResults.ToList().ForEach(x =>
+            {
+
+                message.Append(string.Format("{0} Score: {1} / {2} Points. {3}",
+                    x.CategoryName,
+                    x.TotalScoredPoints,
+                    x.TotalPossiblePoints,
+                    "<br/><br/>"));
+
+
+                message.Append(string.Format("Questions asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}",
+                    x.TotalQuestionsAsked,
+                    x.TotalQuestionsAnswered,
+                    x.TotalQuestionsAnsweredCorrectly,
+                  "<br/>"));
+
+            });
+
+            message.Append("<hr>");
 
             sendMail(exam.Examiner, "davidy@datacom.co.nz",
                 "Interview exam results for: " + candidate.FirstName + " " + candidate.LastName + " Email: " + candidate.Email, 
@@ -241,6 +273,8 @@ namespace Datacom.CorporateSys.HireAPI
             oSmtpClient.Send(msg);
         }
 
+
+
         public List<Category> GetCategories(List<Guid> categoryIds)
         {
             var list = Enumerable.Empty<Category>().ToList();
@@ -261,6 +295,30 @@ namespace Datacom.CorporateSys.HireAPI
             {
                 var exam = examRepo.GenerateExam(categoryIds, candidateGuid, examiner);
                 return Mapper.Map<Exam>(exam);
+            }
+        }
+
+
+        public List<Question> GetQuestions(List<Guid> questionIds)
+        {
+            using (var examRepo = new ExamRepository())
+            {
+                var exams = examRepo.GetQuestions(questionIds);
+                return Mapper.Map<List<Question>>(exams);
+            }
+        }
+
+        public List<Question> GetSubQuestions(Guid questionOptionId)
+        {
+            using (var examRepo = new ExamRepository())
+            {
+                var questions = examRepo.GetSubQuestions( questionOptionId,true);
+
+                var quesiontList = Mapper.Map<List<Question>>(questions);
+
+                quesiontList.ForEach(x=>x.IsChildQuestion=true);
+
+                return quesiontList;
             }
         }
     }

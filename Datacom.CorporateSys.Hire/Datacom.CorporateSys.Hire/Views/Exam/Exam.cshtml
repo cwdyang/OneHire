@@ -1,68 +1,75 @@
 ﻿@using System.Web.UI.WebControls
+@using Datacom.CorporateSys.Hire.Helpers
 @model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
 
 @{
     ViewBag.Title = "Datacom internal interview exam";
+    
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
-</hgroup>
 
-@using (Html.BeginForm("AnswerQuestion","Exam",FormMethod.Post))
-{
-    
         <article>
             <fieldset>
                 <p>
-                    @{ Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model.Exam.Questions.First(x => x.Sequence == Model.Exam.CurrentQuestionNumber)); }
+                    @{ Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model.Exam.Questions.First(x => x.Sequence == Model.Exam.CurrentQuestionNumber), new ViewDataDictionary { { "IsLastQuestion", (Model.Exam.Questions.Count(x=>x.SelectedOption==null)<=1) } }); }
                 </p>
-                <p>
-                    @if (Model.Exam.CurrentQuestionNumber > 1)
-                    {
-                        @Html.ActionLink("Previous |", "Exam", "Exam", new
+                <br />
+                <p >
+                    
+                    <div style="float: left; text-align: left; width: 25%;">
+                        <h4>
+                            @if (Model.Exam.CurrentQuestionNumber > 1)
+                            {
+
+                                @Html.ActionLink("Previous Question", "Exam", "Exam", new
+                                {
+                                    // htmlAttributes
+                                    questionNumber = Model.Exam.CurrentQuestionNumber - 1
+                                }, null)
+
+                            }
+                        </h4>
+                    </div>
+                    <div style="float: left; text-align: center; width: 50%;">
+                        @using (Html.BeginForm("Exam", "Exam", FormMethod.Post, new {id = "formJumpToQuestion"}))
                         {
-                            // htmlAttributes
-                            questionNumber = Model.Exam.CurrentQuestionNumber - 1
-                        }, null)
-                    }
-                    
-                    @{
-                    var list = new List<int>();
+                            
+                            var list = new Dictionary<int, string>();
 
-                    for (int i = 1; i <= Model.Exam.Questions.ToList().Count; i++)
-                    {
+                            for (int i = 1; i <= Model.Exam.Questions.ToList().Count; i++)
+                            {
 
-                        list.Add(i);
-                    }
-                    }
-                    
-                    
-                    Jump to question @Html.DropDownList("ddlQuestionJump", new SelectList(list.AsEnumerable(), Model.Exam.CurrentQuestionNumber), new { @onchange = "this.form.action = 'Exam?questionNumber='+$('#ddlQuestionJump').val(); this.form.submit();" }) 
-                    
-
-                    @if (Model.Exam.CurrentQuestionNumber < Model.Exam.Questions.ToList().Count)
-                    {
-                        @Html.ActionLink("| Next", "Exam", "Exam", new
-                        {
-                            // htmlAttributes
-                            questionNumber = Model.Exam.CurrentQuestionNumber + 1
-                        }, null)
-                    }
-                    
-                    
+                                list.Add(i, "Jump to question" + ((i==Model.Exam.CurrentQuestionNumber)?"...": ( i + (Model.Exam.Questions[i - 1].SelectedOption == null ? " (not answered)" : ""))));
+                            }
 
 
-                    
-                    
+                            @Html.DropDownList("ddlQuestionJump", new SelectList(list.AsEnumerable(), "Key", "Value", Model.Exam.CurrentQuestionNumber), new {@onchange = "this.form.action='Exam?questionNumber='+$('#ddlQuestionJump').val();this.form.submit();", @class = "form-control"})
+                        }
+                    </div>
+                    <div style="float: left;  text-align: right; width: 25%;">
+                        <h4>
+                            @if (Model.Exam.CurrentQuestionNumber < Model.Exam.Questions.ToList().Count)
+                            {
+
+                                @Html.ActionLink("Next Question", "Exam", "Exam", new
+                                {
+                                    // htmlAttributes
+                                    @class = "btn btn-default",
+                                    questionNumber = Model.Exam.CurrentQuestionNumber + 1
+                                }, null)
+
+                            }
+                        </h4>
+                    </div>
+       
+
                 </p>
             </fieldset>
     </article>
-}
+
 <aside>
     <p>
-        <h3>You are: @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+        <h3>@Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
     </p>
 
     <p>
@@ -72,5 +79,6 @@
     <p>
         Total Questions (Answered) = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count) (@Html.DisplayFor(model => model.Exam.Questions.Where(x=>x.SelectedOption!=null).ToList().Count))
     </p>
-
+    
+    
 </aside>

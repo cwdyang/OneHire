@@ -1,16 +1,13 @@
-﻿@{
+﻿@using Datacom.CorporateSys.Hire.Helpers
+@{
     ViewBag.Title = "Datacom Interview Exam";
 }
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h2>@ViewBag.Title.</h2>
             </hgroup>
-            <p>
-               Welcome!
-            </p>
         </div>
     </section>
 }
@@ -31,3 +28,19 @@
         Your results may be emailed to you at the examiner's discretion.
     </li>
 </ol>
+
+
+<!--Ajax.ModalDialogActionLink("Click to open dialog2", "Dialog2", "Exam","xx")-->
+<div id="modal-container" class="modal fade"
+     tabindex="-1" role="dialog">
+    <div class="modal-content">
+    </div>
+</div>
+
+<style>
+    .modal-content {
+        width: 600px !important;
+        margin: 30px auto !important;
+    }
+</style>
+

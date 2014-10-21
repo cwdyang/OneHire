@@ -127,7 +127,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
                 questionList.AddRange(questions);
             }
 
-            var exam = new Exam {Examiner = examiner, Candidate = candidate, Id = Guid.NewGuid(), Questions = questionList, Categories = categories,CreatedOn = DateTime.Now};
+            var exam = new Exam { Examiner = examiner, Candidate = candidate, Id = Guid.NewGuid(), Questions = questionList, Categories = categories, CreatedOn = DateTimeOffset.Now, StartedOn = DateTimeOffset.Now };
 
             DbContext.Candidates.Attach(candidate);
             DbContext.Exams.Add(exam);
@@ -147,6 +147,15 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             DbContext.SaveChanges();
 
             return exam;
+        }
+
+        public List<Question> GetQuestions(List<Guid> questionIds)
+        {
+            var questions = DbContext.Questions.Include(x => x.QuestionOptions).Where(x => questionIds.Contains(x.Id));
+
+            questions.ToList().ForEach(y=>DbContext.Entry(y).Reference(z=>z.Category).Load());
+
+            return questions.ToList();
         }
     }
 }

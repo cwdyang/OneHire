@@ -58,18 +58,18 @@ mark {
     visibility: hidden;
 }
 
-h1, h2, h3,
+h2, h3, h3,
 h4, h5, h6 {
     color: #000;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
-h1 {
+h2 {
     font-size: 2em;
 }
 
-h2 {
+h3 {
     font-size: 1.75em;
 }
 
@@ -223,7 +223,7 @@ ul#menu {
         padding: 20px 40px 30px 40px;
     }
 
-        .featured hgroup.title h1, .featured hgroup.title h2 {
+        .featured hgroup.title h2, .featured hgroup.title h3 {
             color: #fff;
         }
 
@@ -236,11 +236,11 @@ hgroup.title {
     margin-bottom: 10px;
 }
 
-hgroup.title h1, hgroup.title h2 {
+hgroup.title h2, hgroup.title h3 {
     display: inline;
 }
 
-hgroup.title h2 {
+hgroup.title h3 {
     font-weight: normal;
     margin-left: 3px;
 }
@@ -368,7 +368,7 @@ aside {
     width: 40%;
 }
 
-    #socialLoginForm h2 {
+    #socialLoginForm h3 {
         margin-bottom:  5px;
     }
 

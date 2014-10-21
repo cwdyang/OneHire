@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using Datacom.CorporateSys.Hire.Constants;
 using Datacom.CorporateSys.Hire.Helpers;
+using Datacom.CorporateSys.Hire.Models;
 using Datacom.CorporateSys.Hire.ViewModels;
 using Datacom.CorporateSys.HireAPI;
+using Newtonsoft.Json;
 using WebGrease.Css.Extensions;
 
 namespace Datacom.CorporateSys.Hire.Controllers
@@ -24,23 +27,19 @@ namespace Datacom.CorporateSys.Hire.Controllers
         public ActionResult CategoryTree(IEnumerable<Guid> categoryIds, Guid? candidateId, bool recurse=false)
         {
 
-            var categories = _examService.GetCategories((categoryIds==null)?Enumerable.Empty<Guid>().ToList(): categoryIds.ToList());
-
             if (ViewModel == null || ViewModel.Candidate == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
-            else
-            {
-                ViewModel.Categories = categories;
-            }
-
+           
+            ViewModel.Categories = _examService.GetCategories((categoryIds == null) ? Enumerable.Empty<Guid>().ToList() : categoryIds.ToList()); ;
 
             return View(ViewModel);
         }
 
         public ActionResult GenerateExam(FormCollection items)
         {
+            if (ViewModel == null || ViewModel.Candidate == null)
+                return RedirectToAction("Login", "Account");
+
             var categoryIds = new List<Guid>();
 
             foreach (var key in items.AllKeys)
@@ -73,6 +72,30 @@ namespace Datacom.CorporateSys.Hire.Controllers
             _examService = new ExamService();
         }
 
+        [HttpPost]
+        public ActionResult Dialog2(DialogModel model)
+        {
+            return ProcessDialog(model, 2,"xyz");
+        }
+
+        public ActionResult Dialog2()
+        {
+            return PartialView();
+        }
+
+        ActionResult ProcessDialog(DialogModel model, int answer, string message)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Value == answer)
+                    return this.DialogResult(message);  // Close dialog via DialogResult call
+                else
+                    ModelState.AddModelError("", string.Format("Invalid input value. The correct value is {0}", answer));
+            }
+
+            return PartialView(model);
+        }
+
         public ActionResult Exam(int? questionNumber)
         {
 
@@ -85,9 +108,11 @@ namespace Datacom.CorporateSys.Hire.Controllers
                 var exam = _examService.GetLatestOpenExamWithQuestionOptions(ViewModel.Candidate.Id);
 
                 if (exam == null)
-                    return new HttpStatusCodeResult(404); //return new EmptyResult(); //preferred
+                    return RedirectToAction("CategoryTree", "Exam");
 
                 exam.CurrentQuestionId = exam.Questions.First().Id;
+
+                exam.StartedOn = DateTimeOffset.Now;
 
                 ViewModel.Exam = exam;
 
@@ -98,27 +123,72 @@ namespace Datacom.CorporateSys.Hire.Controllers
             return View(ViewModel);
         }
 
+
+
+        [HttpPost]
+        public ActionResult GetSubQuestion(Guid optionId)
+        {
+            
+
+            if (ViewModel == null || ViewModel.Candidate == null||ViewModel.Exam == null)
+                return new EmptyResult();
+
+            
+            ViewData["IsLastQuestion"] = false;
+
+            var option = ViewModel.Exam.Questions.SelectMany(x => x.Options).FirstOrDefault(x => x.Id == optionId);
+           
+            if (option != null)
+            {
+                var subQuestion = option.Questions.FirstOrDefault() ?? _examService.GetSubQuestions(optionId).FirstOrDefault();
+                
+                if(subQuestion==null)
+                    return new EmptyResult();
+                
+                var quesiton = ViewModel.Exam.Questions.FirstOrDefault(x => x.Options.Any(y=>y.Id==optionId&&y.IsSelected));
+
+                if (quesiton != null)
+                {
+                    quesiton.SelectedOptionJSON = new JavaScriptSerializer().Serialize(option);
+
+                    var result = AnswerQuestion(quesiton);
+
+                    if (quesiton.SelectedOption.Questions.FirstOrDefault() == null)
+                        quesiton.SelectedOption.Questions.Add(subQuestion);
+                }
+
+                if (option.Questions.FirstOrDefault()==null)
+                    option.Questions.Add(subQuestion);
+
+                return PartialView("QuestionControl", subQuestion);
+            }
+            else
+                return new EmptyResult();
+
+        }
+
         [HttpPost]
         public ActionResult AnswerQuestion(Question question)
         {
-            if (ViewModel == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
+            if (ViewModel == null || ViewModel.Candidate == null)
+                return RedirectToAction("Login", "Account");
 
             Option optionSelected = null;
 
             try
             {
                 optionSelected = Newtonsoft.Json.JsonConvert.DeserializeObject<Option>(question.SelectedOptionJSON);
-
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(404);
+                return Redirect(Request.UrlReferrer.ToString());
             }
             
-            var parentQuestion = ViewModel.Exam.Questions.First(x => x.Id == optionSelected.ParentQuestionId);
+            var parentQuestion = ViewModel.Exam.Questions.FirstOrDefault(x => x.Id == optionSelected.ParentQuestionId) ??
+                                 ViewModel.Exam.Questions.SelectMany(t => t.Options)
+                .SelectMany(x => x.Questions)
+                .FirstOrDefault(x => x.Id == optionSelected.ParentQuestionId);
+
 
             var answer = new Answer { AnswerText = optionSelected.Text, Exam = ViewModel.Exam, Id = Guid.NewGuid(), Level = parentQuestion.Level, Option = optionSelected, ScorePoint = parentQuestion.ScorePoint, Text = optionSelected.Text };
 
@@ -127,23 +197,37 @@ namespace Datacom.CorporateSys.Hire.Controllers
             parentQuestion.SelectedOption = optionSelected;
 
             if (ViewModel.Exam.Questions.All(x => x.SelectedOption != null))
-                return CompleteExam();
+                return CompleteExamInternal();
 
-            ViewModel.Exam.CurrentQuestionNumber += (ViewModel.Exam.CurrentQuestionNumber ==
-                                                     ViewModel.Exam.Questions.Count)
-                ? 0
-                : 1;
+            var nextUnanweredQuestion = ViewModel.Exam.Questions.Where(x=>x.SelectedOption==null).OrderBy(x=>x.Sequence).FirstOrDefault();
+
+            ViewModel.Exam.CurrentQuestionNumber = (nextUnanweredQuestion != null) ? nextUnanweredQuestion.Sequence : 1;
 
             //return Redirect(Request.UrlReferrer.ToString());
             return RedirectToAction("Exam", "Exam", new { questionNumber = ViewModel.Exam.CurrentQuestionNumber});
         }
 
-        private ActionResult CompleteExam()
+        private ActionResult CompleteExamInternal()
         {
+            if (ViewModel == null || ViewModel.Candidate == null)
+                return RedirectToAction("Login", "Account");
+
             _examService.CompleteExam(ViewModel.Exam, ViewModel.Candidate);
             ViewModel.Exam = null;
             ViewModel.Categories = null;
-            return RedirectToAction("CategoryTree", "Exam");
+
+            return RedirectToAction("CompleteExam", "Exam");
         }
+
+        public ActionResult CompleteExam()
+        {
+
+            ViewBag.Message = "Your exam is complete, the examiner/interviewer will be in touch shortly.";
+
+            return View(ViewModel);
+
+        }
+
+
     }
 }

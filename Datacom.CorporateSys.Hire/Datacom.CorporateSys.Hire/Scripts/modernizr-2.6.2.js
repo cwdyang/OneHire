@@ -758,7 +758,7 @@ window.Modernizr = (function( window, document, undefined ) {
                 bool.ogg  = elem.canPlayType('video/ogg; codecs="theora"')      .replace(/^no$/,'');
 
                 // Without QuickTime, this value will be `undefined`. github.com/Modernizr/Modernizr/issues/546
-                bool.h264 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"') .replace(/^no$/,'');
+                bool.h364 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"') .replace(/^no$/,'');
 
                 bool.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/,'');
             }
@@ -1037,7 +1037,7 @@ window.Modernizr = (function( window, document, undefined ) {
       var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
 
       /** Not all elements can be cloned in IE **/
-      var saveClones = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
+      var saveClones = /^(?:a|b|code|div|fieldset|h2|h3|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i;
 
       /** Detect whether the browser supports default html5 styles */
       var supportsHtml5Styles;

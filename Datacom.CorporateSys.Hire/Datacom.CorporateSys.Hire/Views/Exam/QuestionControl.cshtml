@@ -3,62 +3,155 @@
 
 @{
     Layout = null;
+
+}
+@using (Html.BeginForm("AnswerQuestion", "Exam", FormMethod.Post, new {id = "formAnswerQuestion"}))
+{
+    <script>
+        var selectedOptionJson = "";
+    </script>
+    
+        <fieldset>
+            <table>
+                <tr>
+                    <td colspan="2">
+                        <h3>@((Model.IsChildQuestion)?"": "Category :" + Model.CategoryName)</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <br />
+                        <h4>@(((bool) ViewData["IsLastQuestion"]) ? "Last Question" : "") @((Model.IsChildQuestion)?"":" Question "+ Model.Sequence + ":")  @Html.DisplayFor(model => model.Text)</h4>
+                    </td>
+                </tr>
+                @if (Model != null && Model.Options != null)
+            {
+                foreach (var option in Model.Options)
+                {
+                    <tr>
+                            <td width="10%">
+                                @{
+                                bool checkOption = (Model.SelectedOption != null && Model.SelectedOption.Id == option.Id);
+                                bool disableOption = (Model.SelectedOption != null);
+
+
+                                var array = new Dictionary<string, object>();
+                                array.Add("class", "radioQuestion");
+                                array.Add("id", option.Id);
+
+                                if (checkOption)
+                                {
+                                    array.Add("checked", "checked");
+                                }
+                                if (disableOption)
+                                {
+                                    array.Add("disabled", "disabled");
+                                }
+
+                            }
+                                <!--http://msdn.microsoft.com/en-us/library/dd410596.aspx-->
+        @Html.RadioButtonFor(model => model.SelectedOptionJSON, Newtonsoft.Json.JsonConvert.SerializeObject(option, new JsonSerializerSettings
+                       {
+                           ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                           PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                       }), array) <!--disabled=(Model.SelectedOption != null)?"disabled":"" -->
+        <!--Html.RadioButton("Buyer", "Buyer", new { onchange = "this.form.submit();" })-->
+    </td>
+    <td>
+        @option.Text
+
+        @if (Model.SelectedOption != null && Model.SelectedOption.Questions.FirstOrDefault() != null && Model.SelectedOption.Id == option.Id)
+                            {
+                                <script>
+    //executes after page load
+    $(function() {
+                                        getSubQuestionAjax($("#@option.Id").val());
+                                        //alert($("#@option.Id")); $("#@option.Id").click();
+                                    });
+                                </script>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="2">
+                    @if (Model!=null&&Model.SelectedOption == null)
+                    {
+                        <input id="btnSubmit" name="btnSubmit" type='submit' value='Confirm Answer' class="btn btn-default" />
+                    }
+                </td>
+            </tr>
+            
+            <tr>
+                <td colspan="2">
+                    <div id="divPartialViewContainer"></div>
+                </td>
+            </tr>
+
+        </table>
+
+    </fieldset>
 }
 
-<table>
-    <tr>
-        <td colspan="2">
-            <b>Category : @Html.DisplayFor(model => model.CategoryName)</b>
-            <br />
-            &nbsp;
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <b>Question @Html.DisplayFor(model => model.Sequence) : @Html.DisplayFor(model => model.Text)</b>
-        </td>
-    </tr>
-    @foreach (var option in Model.Options)
-    {
-        <tr>
-            <td>
-                @{
-                   bool checkOption = (Model.SelectedOption != null && Model.SelectedOption.Id == option.Id);
-                   bool disableOption = (Model.SelectedOption != null);
-                   var array = new Dictionary<string, object>();
-                   if(checkOption)
-                   { array.Add("checked", "checked"); }
-                   if (disableOption)
-                   { array.Add("disabled", "disabled"); }
-               }
-                <!--http://msdn.microsoft.com/en-us/library/dd410596.aspx-->
-                @Html.RadioButtonFor(model => model.SelectedOptionJSON, Newtonsoft.Json.JsonConvert.SerializeObject(option), array) <!--disabled=(Model.SelectedOption != null)?"disabled":"" -->
-                <!--Html.RadioButton("Buyer", "Buyer", new { onchange = "this.form.submit();" })-->
-            </td>
-            <td>
-                @option.Text
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @if (false)
-                {
 
-                    Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model);
 
+    <script>
+
+        window.onload = (function() {
+
+            var isLastQuestion = @(((bool) ViewData["IsLastQuestion"]).ToString().ToLower());
+
+            if (isLastQuestion)
+                $("#btnSubmit").click(submitForm);
+            
+            $('.radioQuestion').click(getSubQuestion);
+
+        });
+
+        function submitForm(event) {
+
+            event.preventDefault();
+            var btnSubmit = this;
+
+            bootbox.confirm("You are about to submit your exam.", function(result) {
+                    if (result)
+                        btnSubmit.form.submit();
                 }
-            </td>
-        </tr>
-    }
-    
-    <tr><td colspan="2">
-            @if (Model.SelectedOption == null)
-            {
-                <input type='submit' value='Confirm Answer' />
-            }
-            else
-            {
+            );
+        }
 
-            }
-        </td></tr>
-</table>
+        function getSubQuestionAjax(value) {
+            
+
+            var obj = jQuery.parseJSON(value);
+
+
+            $.ajax({
+                url: '/Exam/GetSubQuestion?optionId=' + obj.Id,
+                type: 'POST',
+                contentType: 'application/html',
+                //data: JSON.stringify(model),
+                success: function (content) {
+                    $('#divPartialViewContainer').html(content);
+                    if(content!="")
+                        $("#btnSubmit").hide();
+                },
+                error: function (e) {
+                    //alert(e);
+                }
+            });
+        }
+
+        function getSubQuestion(evvt) {
+            getSubQuestionAjax(this.value);
+        }
+    </script>
+
+
+

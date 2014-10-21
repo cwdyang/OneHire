@@ -67,6 +67,13 @@ namespace Datacom.CorporateSys.Hire.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            return LogOut();
+        }
+
+        public ActionResult LogOut()
+        {
+            ViewModel = null;
+
             WebSecurity.Logout();
 
             return RedirectToAction("Index", "Home");

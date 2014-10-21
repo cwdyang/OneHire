@@ -149,6 +149,10 @@ namespace Datacom.CorporateSys.HireAPI
         public int Level { get; set; }
 
         [DataMember]
+        public bool IsChildQuestion { get; set; }
+
+
+        [DataMember]
         public int ScorePoint { get; set; }
 
         public Question()

@@ -18,6 +18,9 @@ namespace Datacom.CorporateSys.HireAPI
         List<Category> GetCategories(List<Guid> categoryIds);
 
         [OperationContract]
+        List<Question> GetQuestions(List<Guid> questionIds);
+
+        [OperationContract]
         Exam GenerateExam(List<Guid> categoryIds, Guid candidateGuid, string examiner);
 
         [OperationContract]
@@ -26,6 +29,7 @@ namespace Datacom.CorporateSys.HireAPI
         [OperationContract]
         Exam CompleteExam(Exam exam,Candidate candidate);
 
-
+        [OperationContract]
+        List<Question> GetSubQuestions(Guid questionOptionId);
     }
 }

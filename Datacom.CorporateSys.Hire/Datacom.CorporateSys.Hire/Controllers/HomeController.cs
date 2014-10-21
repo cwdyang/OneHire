@@ -8,11 +8,14 @@ using Datacom.CorporateSys.HireAPI;
 
 namespace Datacom.CorporateSys.Hire.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ExamController
     {
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome!";
+
+            if (User.Identity.IsAuthenticated && (ViewModel==null||ViewModel.Candidate == null))
+                return RedirectToAction("LogOut", "Account");
 
             return View();
         }

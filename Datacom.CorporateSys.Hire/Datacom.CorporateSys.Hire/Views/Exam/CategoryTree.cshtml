@@ -19,12 +19,13 @@
     foreach (var category in categories)
     {
         <!--This is crucial for checkUncheckChildCheckBoxes() dont mess with the li's id -->
-       <li style="list-style-type: none;" id="@category.Id">
+        <li style="list-style-type: none;" id="@category.Id">
 
             <span>
                 @Html.CheckBox(category.Id.ToString(), false, new { @onchange = "checkUncheckChildCheckBoxes(this);" })
                 @category.Text
             </span>
+
             @if (category.Categories.Count > 0)
             {
                 <ul>
@@ -32,6 +33,7 @@
                 </ul>
             }
         </li>
+    
     }
 }
 
@@ -39,6 +41,7 @@
 {
 <article>
     <p><h3>@ViewBag.Title</h3></p>
+    <br />
     <fieldset>
         <ul id="continentFolders">
             @if (Model.Candidate == null)
@@ -52,9 +55,9 @@
 
         </ul>
     </fieldset>
-    
+    <br />
     <p>
-        <input type='submit' value='Generate Exam' />
+        <input type='submit' value='Generate Exam' class="btn btn-default" />
     </p>
 </article>
 }
@@ -63,7 +66,7 @@
     <p>
         @if (Model.Candidate != null)
         {
-            <h3>Candidate: @Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+            <h3>@Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
         }
     </p>
 </aside>
