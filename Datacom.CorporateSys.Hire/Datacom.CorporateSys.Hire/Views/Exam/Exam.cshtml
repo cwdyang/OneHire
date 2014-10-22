@@ -4,12 +4,22 @@
 
 @{
     ViewBag.Title = "Datacom internal interview exam";
-    
 }
-
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h3>@ViewBag.Title.</h3>
+            </hgroup>
+        </div>
+    </section>
+}
 
         <article>
             <fieldset>
+                <p>
+                    
+                </p>
                 <p>
                     @{ Html.RenderPartial("~/Views/Exam/QuestionControl.cshtml", Model.Exam.Questions.First(x => x.Sequence == Model.Exam.CurrentQuestionNumber), new ViewDataDictionary { { "IsLastQuestion", (Model.Exam.Questions.Count(x=>x.SelectedOption==null)<=1) } }); }
                 </p>
@@ -77,7 +87,13 @@
     </p>
 
     <p>
-        Total Questions (Answered) = @Html.DisplayFor(model => model.Exam.Questions.ToList().Count) (@Html.DisplayFor(model => model.Exam.Questions.Where(x=>x.SelectedOption!=null).ToList().Count))
+        @{
+            var answeredQuestions = Model.Exam.Questions.Where(x => x.SelectedOption != null).ToList().Count;
+            var totalQuestions = Model.Exam.Questions.Count();
+        }
+        Total Questions (Answered) = @totalQuestions (@answeredQuestions)
+        <br/>
+        <progress max="@totalQuestions" value="@answeredQuestions" title="Your progress" ></progress>
     </p>
     
     

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -46,7 +47,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
 
                 if (candidate != null)
                 {
-                    base.ViewModel = new ExamViewModel(candidate, null, null);
+                    base.ViewModel = new ExamViewModel(candidate, null, null, ConfigurationSettings.AppSettings["DefaultExaminerEmail"]);
                     if (new ExamService().HasOpenExams(candidate.Id))
                         return RedirectToAction("Exam", "Exam");
                     else
@@ -110,11 +111,11 @@ namespace Datacom.CorporateSys.Hire.Controllers
                         Email = model.UserName,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
-                        MobileNumber = model.MobileNumber
+                        MobileNumber = model.MobileNumber,
                     });
 
                     if(base.ViewModel==null)
-                        ViewModel = new ExamViewModel(candidate,null,null);
+                        ViewModel = new ExamViewModel(candidate, null, null, ConfigurationSettings.AppSettings["DefaultExaminerEmail"]);
 
 
                     return RedirectToAction("Index", "Home");

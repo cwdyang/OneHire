@@ -1,15 +1,21 @@
 ﻿@model Datacom.CorporateSys.Hire.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Use an email account to log in.";
 }
 
-<hgroup class="title">
-    <h2>@ViewBag.Title.</h2>
-</hgroup>
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h3>@ViewBag.Title.</h3>
+            </hgroup>
+        </div>
+    </section>
+}
 
 <section id="loginForm">
-<h3>Use an email account to log in.</h3>
+
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -18,10 +24,10 @@
         <legend>Log in Form</legend>
         <ol>
             <li>
+            
                 @Html.LabelFor(m => m.UserName)
                 @Html.TextBoxFor(m => m.UserName)
                 @Html.ValidationMessageFor(m => m.UserName)
-            </li>
             <li>
                 @Html.LabelFor(m => m.Password)
                 @Html.PasswordFor(m => m.Password)

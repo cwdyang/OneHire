@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using AutoMapper;
+using Datacom.CorporateSys.Hire.Datastore.Migrations;
 using Datacom.CorporateSys.Hire.Datastore.Repositories;
 using Datacom.CorporateSys.Hire.Domain.Models;
 
@@ -173,6 +175,12 @@ namespace Datacom.CorporateSys.HireAPI
             return answer;
         }
 
+        /// <summary>
+        /// TODO > use XSLT and template!!
+        /// </summary>
+        /// <param name="exam"></param>
+        /// <param name="candidate"></param>
+        /// <returns></returns>
         public Exam CompleteExam(Exam exam,Candidate candidate)
         {
             var message = new StringBuilder();
@@ -192,30 +200,52 @@ namespace Datacom.CorporateSys.HireAPI
 
             exam.CompletedOn = examReturend.CompletedOn;
 
-            message.Append(string.Format("Interview exam results for: {0} {1} {2}",
+            message.Append(string.Format("<!DOCTYPE html><html lang='en'><span style='font-family:arial;'>Interview Exam Results for: {0} {1} {2}",
                 candidate.FirstName, candidate.LastName, "<br/><br/>"));
 
-            message.Append(string.Format("Candidate email: {0}{1}",
+            message.Append(string.Format("Candidate Email: {0}{1}",
                 candidate.Email, "<br/><br/>"));
 
             message.Append("<hr>");
 
-            message.Append(string.Format("Exam {2}Start: {0}{2}Finish{1} {2}{2}",
+            message.Append(string.Format("<b>Exam</b>{3}{3}Start:  {0}{3}Finish: {1} {3}Minutes Taken: {2} {3}{3}",
                exam.StartedOn.GetValueOrDefault().ToString("yyyy-MMM-dd HH:mm:ss"),
                exam.CompletedOn.GetValueOrDefault().ToString("yyyy-MMM-dd HH:mm:ss"),
+               (exam.CompletedOn-exam.StartedOn).Value.TotalMinutes.ToString("##.##"),
                "<br/>"));
 
-            message.Append(string.Format("Total Score: {0} / {1} Points. {2}",
+            message.Append(string.Format("Exam Total Score: {0} / {1} Points. {2}<progress value='{0}' max='{1}'></progress> {2}",
                exam.TotalScoredPoints,
                exam.TotalPossiblePoints,
                "<br/><br/>"));
 
-            message.Append(string.Format("Questions Asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}{4}",
+            message.Append(string.Format("Standard Questions Asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}{4}{3}",
                 exam.TotalQuestionsAsked,
                 exam.TotalQuestionsAnswered,
                 exam.TotalQuestionsAnsweredCorrectly,
               "<br/>","<hr>"));
 
+
+            var queryBonusQuestions = exam.Questions.Where(x => x.SelectedOption != null).SelectMany(x => x.SelectedOption.Questions);
+            var bonusPossiblePoints = queryBonusQuestions.Sum(x => x.ScorePoint);
+            var bonusScoredPoints = queryBonusQuestions.Where(x => x.SelectedOption != null && x.SelectedOption.IsSelected).Sum(x => x.ScorePoint);
+            var bonusQuestionsAsked = queryBonusQuestions.Count();
+            var bonusQuestionsAnswered = queryBonusQuestions.Count(x => x.SelectedOption != null);
+            var bonusQuestionsAnsweredCorrectly = queryBonusQuestions.Count(x => x.SelectedOption != null && x.SelectedOption.IsSelected);
+
+            if (bonusPossiblePoints > 0)
+            {
+                message.Append(string.Format("<b>Extended Questions</b>{2}Total Score: {0} / {1} Points. {2}<progress value='{0}' max='{1}'></progress>{2}",
+                    bonusScoredPoints,
+                    bonusPossiblePoints,
+                    "<br/><br/>"));
+
+                message.Append(string.Format("Extended Questions Asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}{4}{3}",
+                    bonusQuestionsAsked,
+                    bonusQuestionsAnswered,
+                    bonusQuestionsAnsweredCorrectly,
+                    "<br/>", "<hr>"));
+            }
 
             var categoryResults = exam.Questions.GroupBy(x=>x.CategoryName).Select(
                 x => new
@@ -225,52 +255,93 @@ namespace Datacom.CorporateSys.HireAPI
                     TotalQuestionsAnswered = x.Count(y => y.SelectedOption != null),
                     TotalQuestionsAnsweredCorrectly = x.Count(y => y.SelectedOption != null && y.SelectedOption.IsSelected),
                     TotalPossiblePoints = x.Sum(y=>y.ScorePoint),
-                    TotalScoredPoints = x.Where(y=>y.SelectedOption!=null && y.SelectedOption.IsSelected).Sum(y=>y.ScorePoint)
-                }
-            );
+                    TotalScoredPoints = x.Where(y=>y.SelectedOption!=null && y.SelectedOption.IsSelected).Sum(y=>y.ScorePoint),
 
-            message.Append("<hr>");
+                    QueryBonusQuestions = x.Where(y => y.SelectedOption != null).SelectMany(y => y.SelectedOption.Questions),
+                }
+            ).Select(x=> new
+            {
+                x.CategoryName,
+                x.TotalQuestionsAsked,
+                x.TotalQuestionsAnswered,
+                x.TotalQuestionsAnsweredCorrectly,
+                x.TotalPossiblePoints,
+                x.TotalScoredPoints,
+                BonusQuestionsAsked = x.QueryBonusQuestions.Count(),
+                BonusQuestionsAnswered = x.QueryBonusQuestions.Count(y => y.SelectedOption != null),
+                BonusQuestionsAnsweredCorrectly = x.QueryBonusQuestions.Count(y => y.SelectedOption != null && y.SelectedOption.IsSelected),
+                BonusTotalPossiblePoints = x.QueryBonusQuestions.Sum(y => y.ScorePoint),
+                BonusTotalScoredPoints = x.QueryBonusQuestions.Where(y => y.SelectedOption != null && y.SelectedOption.IsSelected).Sum(y => y.ScorePoint)
+            });
+
 
             categoryResults.ToList().ForEach(x =>
             {
 
-                message.Append(string.Format("{0} Score: {1} / {2} Points. {3}",
+                message.Append(string.Format("<b>{0}</b>{3}{3}Score: {1} / {2} Points. {3}{3}<progress value='{1}' max='{2}'></progress>{3}{3}",
                     x.CategoryName,
                     x.TotalScoredPoints,
                     x.TotalPossiblePoints,
-                    "<br/><br/>"));
+                    "<br/>"));
 
-
-                message.Append(string.Format("Questions asked: {0}{3} Answered: {1}{3} Correct: {2} {3}{3}",
+                message.Append(string.Format("Standard Questions Asked: {0}{3}Answered: {1}{3}Correct: {2}{3}{3}",
                     x.TotalQuestionsAsked,
                     x.TotalQuestionsAnswered,
                     x.TotalQuestionsAnsweredCorrectly,
                   "<br/>"));
 
+                if (x.BonusTotalPossiblePoints > 0)
+                {
+                    message.Append(string.Format("Extended Total Score: {0} / {1} Points. {2}<progress value='{0}' max='{1}'></progress>{2}",
+                        x.BonusTotalScoredPoints,
+                        x.BonusTotalPossiblePoints,
+                        "<br/><br/>"));
+
+                    message.Append(string.Format("Extended Questions Asked: {0}{3}Answered: {1}{3}Correct: {2}{3}{3}",
+                        x.BonusQuestionsAsked,
+                        x.BonusQuestionsAnswered,
+                        x.BonusQuestionsAnsweredCorrectly,
+                        "<br/>"));
+                }
             });
 
-            message.Append("<hr>");
+            message.Append("<hr></span></html>");
 
-            sendMail(exam.Examiner, "davidy@datacom.co.nz",
+            SendMail(exam.Examiner, ConfigurationSettings.AppSettings["DefaultSMTPFromEmail"],
                 "Interview exam results for: " + candidate.FirstName + " " + candidate.LastName + " Email: " + candidate.Email, 
                 message.ToString());
 
             return exam;
         }
 
-        public static void sendMail(string to, string from, string subject, string body)
+        public static void SendMail(string to, string from, string subject, string body)
         {
             var msg = new System.Net.Mail.MailMessage(from, to);
             msg.Subject = subject;
             msg.IsBodyHtml = true;
             msg.Body = body;
             msg.IsBodyHtml = true;
-            System.Net.Mail.SmtpClient oSmtpClient = new System.Net.Mail.SmtpClient("dnzakex2.datacom.co.nz");
+            var oSmtpClient = new System.Net.Mail.SmtpClient(ConfigurationSettings.AppSettings["SMTPServer"])
+            {
+                UseDefaultCredentials = true,
+                DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network
+            };
             //https://social.technet.microsoft.com/Forums/en-US/1a84a06a-f1c8-40b4-ace8-1e264f218aa1/550-571-unable-to-relay-for?forum=exchangesvrsecuremessaginglegacy
-            oSmtpClient.UseDefaultCredentials = true;
-            oSmtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
             //550 5.7.1 Unable to relay for
-            oSmtpClient.Send(msg);
+            try
+            {
+                oSmtpClient.Send(msg);
+            }
+            catch (Exception)
+            {
+                oSmtpClient = new System.Net.Mail.SmtpClient("localhost")
+                {
+                    UseDefaultCredentials = true,
+                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis
+                };
+                oSmtpClient.Send(msg);
+            }
+            
         }
 
 
@@ -288,7 +359,13 @@ namespace Datacom.CorporateSys.HireAPI
             return list;
         }
 
-
+        /// <summary>
+        /// TODO > check that the exam has questions!! otherwise don't generate it
+        /// </summary>
+        /// <param name="categoryIds"></param>
+        /// <param name="candidateGuid"></param>
+        /// <param name="examiner"></param>
+        /// <returns></returns>
         public Exam GenerateExam(List<Guid> categoryIds,Guid candidateGuid,string examiner)
         {
             using (var examRepo = new ExamRepository())

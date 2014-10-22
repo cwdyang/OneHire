@@ -15,7 +15,7 @@ body {
 }
 
 a {
-    color: #333;
+    color: darkblue;
     outline: none;
     padding-left: 3px;
     padding-right: 3px;
@@ -24,7 +24,7 @@ a {
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: darkblue;
     }
 
     a:hover {
@@ -147,14 +147,17 @@ footer {
 ----------------------------------------------------------*/
 #login {
     display: block;
+    color: #d3dce0;
     font-size: .85em;
     margin: 0 0 10px;
     text-align: right;
 }
 
     #login a {
-        background-color: #d3dce0;
+        color: #d3dce0;
+        font-size: 1.4em;
         margin-left: 10px;
+        font-weight: bold;
         margin-right: 3px;
         padding: 2px 3px;
         text-decoration: none;
@@ -162,6 +165,8 @@ footer {
 
     #login a.username {
         background: none;
+         
+     font-size: 1em;
         margin: 0;
         padding: 0;
         text-decoration: underline;
@@ -169,11 +174,15 @@ footer {
 
     #login ul {
         margin: 0;
+        font-size: 1.4em;
     }
 
     #login li {
         display: inline;
+            font-size: .85em;
         list-style: none;
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
 
@@ -190,12 +199,13 @@ ul#menu {
     ul#menu li {
         display: inline;
         list-style: none;
-        padding-left: 15px;
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: darkblue;
             text-decoration: none;
         }
 
@@ -528,6 +538,13 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+
+progress {
+	width: 100%;
+	height: 14px;
+    -webkit-appearance: progress-bar;
+    box-sizing: border-box;
 }
 
 

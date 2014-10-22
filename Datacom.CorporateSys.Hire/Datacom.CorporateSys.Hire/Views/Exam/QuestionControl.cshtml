@@ -21,7 +21,7 @@
                 <tr>
                     <td colspan="2">
                         <br />
-                        <h4>@(((bool) ViewData["IsLastQuestion"]) ? "Last Question" : "") @((Model.IsChildQuestion)?"":" Question "+ Model.Sequence + ":")  @Html.DisplayFor(model => model.Text)</h4>
+                        <h4>@((Model.IsChildQuestion)?"":" Question "+ Model.Sequence + ":")  @Html.DisplayFor(model => model.Text)</h4>
                     </td>
                 </tr>
                 @if (Model != null && Model.Options != null)
@@ -36,7 +36,7 @@
 
 
                                 var array = new Dictionary<string, object>();
-                                array.Add("class", "radioQuestion");
+                                array.Add("class", "radioQuestion"+Model.Id);
                                 array.Add("id", option.Id);
 
                                 if (checkOption)
@@ -103,54 +103,57 @@
 
     <script>
 
-        window.onload = (function() {
+    window.onload = (function() {
 
-            var isLastQuestion = @(((bool) ViewData["IsLastQuestion"]).ToString().ToLower());
+        var isLastQuestion = @(((bool) ViewData["IsLastQuestion"]).ToString().ToLower());
 
-            if (isLastQuestion)
-                $("#btnSubmit").click(submitForm);
-            
-            $('.radioQuestion').click(getSubQuestion);
+        if (isLastQuestion)
+            $("#btnSubmit").click(submitForm);
 
+        $('.radioQuestion'+'@Model.Id').click(getSubQuestion);
+
+    });
+
+    function submitForm(event) {
+
+        event.preventDefault();
+        var btnSubmit = this;
+
+        bootbox.confirm("You are about to submit your exam.", function(result) {
+            if (result)
+                btnSubmit.form.submit();
+        }
+        );
+    }
+
+    function getSubQuestionAjax(value) {
+
+
+        var obj = jQuery.parseJSON(value);
+
+
+        $.ajax({
+            url: '/Exam/GetSubQuestion?optionId=' + obj.Id,
+            type: 'POST',
+            contentType: 'application/html',
+            //data: JSON.stringify(model),
+            success: function (content) {
+                $('#divPartialViewContainer').html(content);
+                if(content!="")
+                {
+                    $("#btnSubmit").hide();
+                    $('.radioQuestion'+'@Model.Id').attr('disabled','disabled');
+                }
+            },
+            error: function (e) {
+                //alert(e);
+            }
         });
+    }
 
-        function submitForm(event) {
-
-            event.preventDefault();
-            var btnSubmit = this;
-
-            bootbox.confirm("You are about to submit your exam.", function(result) {
-                    if (result)
-                        btnSubmit.form.submit();
-                }
-            );
-        }
-
-        function getSubQuestionAjax(value) {
-            
-
-            var obj = jQuery.parseJSON(value);
-
-
-            $.ajax({
-                url: '/Exam/GetSubQuestion?optionId=' + obj.Id,
-                type: 'POST',
-                contentType: 'application/html',
-                //data: JSON.stringify(model),
-                success: function (content) {
-                    $('#divPartialViewContainer').html(content);
-                    if(content!="")
-                        $("#btnSubmit").hide();
-                },
-                error: function (e) {
-                    //alert(e);
-                }
-            });
-        }
-
-        function getSubQuestion(evvt) {
-            getSubQuestionAjax(this.value);
-        }
+    function getSubQuestion(evvt) {
+        getSubQuestionAjax(this.value);
+    }
     </script>
 
 

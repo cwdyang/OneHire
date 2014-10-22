@@ -22,9 +22,10 @@
     </head>
     <body>
         <header>
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="width: 100%; height: 125px;  background-image: url('../Images/History-Header.jpg')">
                 <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Datacom", "Index", "Home")</p>
+
+                    <p class="site-title">@Html.ActionLink(".", "Index", "Home")</p>
                 </div>
                 <div class="float-right">
                     <section id="login">
@@ -32,10 +33,9 @@
                     </section>
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Your Exam", "Exam", "Exam")</li>
-                            <li>@Html.ActionLink("Your Categories", "CategoryTree", "Exam")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Read Me", "Index", "Home")</li>|
+                            <li>@Html.ActionLink("Open Exam", "Exam", "Exam")</li>|
+                            <li>@Html.ActionLink("Exam Categories", "CategoryTree", "Exam")</li>
                         </ul>
                     </nav>
                 </div>

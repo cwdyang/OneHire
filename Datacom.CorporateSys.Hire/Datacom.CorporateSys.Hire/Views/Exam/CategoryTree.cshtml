@@ -4,6 +4,15 @@
 @{
     ViewBag.Title = "Select Exam categories";
 }
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h3>@ViewBag.Title.</h3>
+            </hgroup>
+        </div>
+    </section>
+}
 <!--http://www.mikesdotnetting.com/Article/218/Managing-Checkboxes-And-Radios-In-ASP.NET-Razor-Web-Pages-->
 <script>
     function checkUncheckChildCheckBoxes(checkbox) {
@@ -37,11 +46,11 @@
     }
 }
 
+
 @using (Html.BeginForm("GenerateExam", "Exam", FormMethod.Post))
 {
 <article>
-    <p><h3>@ViewBag.Title</h3></p>
-    <br />
+    <p>@Html.ValidationSummary()</p>
     <fieldset>
         <ul id="continentFolders">
             @if (Model.Candidate == null)
@@ -57,16 +66,37 @@
     </fieldset>
     <br />
     <p>
-        <input type='submit' value='Generate Exam' class="btn btn-default" />
+        @Html.LabelFor(m => m.ExaminerEmail)
+        @Html.TextBoxFor(m => m.ExaminerEmail)
+        <br/>
+        <input type='submit' value='Generate Exam' class="btn btn-default" onclick="return checkCheckBoxes();" />
     </p>
 </article>
 }
 
 <aside>
     <p>
-        @if (Model.Candidate != null)
-        {
-            <h3>@Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
-        }
+        <h3>@Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
     </p>
 </aside>
+
+<script>
+    function checkCheckBoxes() {
+        var checkedCount = $("input:checked").length;
+        var valid = checkedCount > 0;
+        if (!valid) {
+            $(".validation-summary-valid").append(
+            "<li font>" + "You must select at least one category." + "</li>");
+            $(".validation-summary-valid").attr("class", "validation-summary-errors");
+            $(".validation-summary-errors").show();
+            
+        }
+        return valid;
+    }
+</script>
+        
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

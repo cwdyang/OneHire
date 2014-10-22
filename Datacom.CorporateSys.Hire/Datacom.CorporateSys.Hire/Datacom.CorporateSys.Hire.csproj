@@ -192,7 +192,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AjaxAuthorizeAttribute.cs" />
     <Compile Include="Helpers\ModalDialogueExtensions.cs" />
+    <Compile Include="Helpers\SessionCheckFilterAttribute.cs" />
     <Compile Include="Helpers\SessionExtensions.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DialogModel.cs" />

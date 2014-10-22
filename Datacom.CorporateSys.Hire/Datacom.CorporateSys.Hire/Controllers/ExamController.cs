@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 using Datacom.CorporateSys.Hire.Constants;
 using Datacom.CorporateSys.Hire.Helpers;
@@ -23,22 +24,35 @@ namespace Datacom.CorporateSys.Hire.Controllers
             set { Session.SetDataToSession<ExamViewModel>(SessionConstants.ExamViewModel, value); }
         }
 
+        protected DateTime FormAuthTimeout 
+        {
+            get
+            {
+                try
+                {
+                    return FormsAuthentication.Decrypt(Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName].Value).Expiration;
+                }
+                catch (Exception)
+                {
+                    return DateTime.MinValue;
+                }
+                
+            }
+        }
+
         //http://blog.stevensanderson.com/2010/01/28/editing-a-variable-length-list-aspnet-mvc-2-style/
+        [SessionCheckFilter]
         public ActionResult CategoryTree(IEnumerable<Guid> categoryIds, Guid? candidateId, bool recurse=false)
         {
-
-            if (ViewModel == null || ViewModel.Candidate == null)
-                return RedirectToAction("Login", "Account");
            
             ViewModel.Categories = _examService.GetCategories((categoryIds == null) ? Enumerable.Empty<Guid>().ToList() : categoryIds.ToList()); ;
 
             return View(ViewModel);
         }
 
+        [SessionCheckFilter]
         public ActionResult GenerateExam(FormCollection items)
         {
-            if (ViewModel == null || ViewModel.Candidate == null)
-                return RedirectToAction("Login", "Account");
 
             var categoryIds = new List<Guid>();
 
@@ -51,7 +65,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
             }
 
             //TODO
-            var exam = _examService.GenerateExam(categoryIds, ViewModel.Candidate.Id, "davidy@datacom.co.nz");
+            var exam = _examService.GenerateExam(categoryIds, ViewModel.Candidate.Id, Request.Form["ExaminerEmail"]);
 
             return RedirectToAction("Exam", "Exam");
         }
@@ -96,11 +110,9 @@ namespace Datacom.CorporateSys.Hire.Controllers
             return PartialView(model);
         }
 
+        [SessionCheckFilter]
         public ActionResult Exam(int? questionNumber)
         {
-
-            if (ViewModel == null|| ViewModel.Candidate == null )
-                return RedirectToAction("Login", "Account");
 
             if( ViewModel.Exam == null)
             {
@@ -124,7 +136,7 @@ namespace Datacom.CorporateSys.Hire.Controllers
         }
 
 
-
+        [AjaxAuthorize]
         [HttpPost]
         public ActionResult GetSubQuestion(Guid optionId)
         {
@@ -168,10 +180,9 @@ namespace Datacom.CorporateSys.Hire.Controllers
         }
 
         [HttpPost]
+        [SessionCheckFilter]
         public ActionResult AnswerQuestion(Question question)
         {
-            if (ViewModel == null || ViewModel.Candidate == null)
-                return RedirectToAction("Login", "Account");
 
             Option optionSelected = null;
 
@@ -207,10 +218,9 @@ namespace Datacom.CorporateSys.Hire.Controllers
             return RedirectToAction("Exam", "Exam", new { questionNumber = ViewModel.Exam.CurrentQuestionNumber});
         }
 
+        [SessionCheckFilter]
         private ActionResult CompleteExamInternal()
         {
-            if (ViewModel == null || ViewModel.Candidate == null)
-                return RedirectToAction("Login", "Account");
 
             _examService.CompleteExam(ViewModel.Exam, ViewModel.Candidate);
             ViewModel.Exam = null;

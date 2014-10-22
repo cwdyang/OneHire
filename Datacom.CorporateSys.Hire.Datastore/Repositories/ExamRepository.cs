@@ -66,6 +66,7 @@ namespace Datacom.CorporateSys.Hire.Datastore.Repositories
             //this is a hack, need a better solution if larger numbers are requrieed
             exams.ToList().ForEach(x=>x.Questions.ToList().ForEach(y=>DbContext.Entry(y).Reference(z=>z.Category).Load()));
 
+
             return exams.ToList();
         }
 
