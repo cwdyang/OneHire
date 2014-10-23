@@ -230,6 +230,7 @@ ul#menu {
         background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         color: #3e5667;
+        max-width:960px;
         padding: 20px 40px 30px 40px;
     }
 
@@ -257,7 +258,7 @@ hgroup.title h3 {
 
 /* features */
 section.feature {
-    width: 300px;
+    width: 100%;
     float: left;
     padding: 10px;
 }
@@ -545,6 +546,11 @@ progress {
 	height: 14px;
     -webkit-appearance: progress-bar;
     box-sizing: border-box;
+}
+
+
+.form-control-cellwidth {
+	width: 100%;
 }
 
 

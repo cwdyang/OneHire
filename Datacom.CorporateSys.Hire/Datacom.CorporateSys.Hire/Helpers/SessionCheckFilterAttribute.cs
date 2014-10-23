@@ -15,6 +15,18 @@ namespace Datacom.CorporateSys.Hire.Helpers
     /// </summary>
     public class SessionCheckFilterAttribute:ActionFilterAttribute
     {
+        private bool _checkExamNotNull = false;
+
+        public SessionCheckFilterAttribute()
+        {
+            _checkExamNotNull = false;
+        }
+
+        public SessionCheckFilterAttribute(bool checkExamNotNull)
+        {
+            _checkExamNotNull = checkExamNotNull;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower();
@@ -24,7 +36,9 @@ namespace Datacom.CorporateSys.Hire.Helpers
             {
                 var viewModel = filterContext.HttpContext.Session.GetDataFromSession<ExamViewModel>(SessionConstants.ExamViewModel);
 
-                if (viewModel == null || viewModel.Candidate == null || !filterContext.HttpContext.Request.IsAuthenticated)
+                var sessionCheckFail = (_checkExamNotNull)? (viewModel == null || viewModel.Candidate == null|| viewModel.Exam==null): (viewModel == null || viewModel.Candidate == null);
+
+                if (sessionCheckFail || !filterContext.HttpContext.Request.IsAuthenticated)
                 {
                     if(filterContext.HttpContext.Request.IsAjaxRequest())
                         filterContext.Result = new EmptyResult();

@@ -1,0 +1,102 @@
+﻿@using Datacom.CorporateSys.HireAPI
+@model Datacom.CorporateSys.Hire.ViewModels.ExamViewModel
+           
+@{
+    ViewBag.Title = "Select Exam categories";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h3>@ViewBag.Title.</h3>
+            </hgroup>
+        </div>
+    </section>
+}
+<!--http://www.mikesdotnetting.com/Article/218/Managing-Checkboxes-And-Radios-In-ASP.NET-Razor-Web-Pages-->
+<script>
+    function checkUncheckChildCheckBoxes(checkbox) {
+        var li = $("li#" + checkbox.name);
+        if (li != null) {
+            li.find("input[type=checkbox]").each(function () { this.checked = checkbox.checked; });
+        }
+    }
+</script>
+
+@helper TreeView(IEnumerable<Category> categories)
+{
+    foreach (var category in categories)
+    {
+        <!--This is crucial for checkUncheckChildCheckBoxes() dont mess with the li's id -->
+        <li style="list-style-type: none;" id="@category.Id">
+
+            <span>
+                @Html.CheckBox(category.Id.ToString(), false, new { @onchange = "checkUncheckChildCheckBoxes(this);" })
+                @category.Text
+            </span>
+
+            @if (category.Categories.Count > 0)
+            {
+                <ul>
+                    @TreeView(category.Categories)
+                </ul>
+            }
+        </li>
+    
+    }
+}
+
+
+@using (Html.BeginForm("GenerateExam", "Exam", FormMethod.Post))
+{
+<article>
+    <p>@Html.ValidationSummary()</p>
+    <fieldset>
+        <ul id="continentFolders">
+            @if (Model.Candidate == null)
+            {
+                <li>No categories available.</li>
+            }
+            else
+            {
+                @TreeView(Model.Categories)
+            }
+
+        </ul>
+    </fieldset>
+    <br />
+    <p>
+        @Html.LabelFor(m => m.ExaminerEmail)
+        @Html.TextBoxFor(m => m.ExaminerEmail)
+        <br/>
+        <input type='submit' value='Generate Exam' class="btn btn-default" onclick="return checkCheckBoxes();" />
+    </p>
+</article>
+}
+
+<aside>
+    <p>
+        <h3>@Html.DisplayFor(model => model.Candidate.FirstName) @Html.DisplayFor(model => model.Candidate.LastName)</h3>
+    </p>
+</aside>
+
+<script>
+    function checkCheckBoxes() {
+        var checkedCount = $("input:checked").length;
+        var valid = checkedCount > 0;
+        if (!valid) {
+            $(".validation-summary-valid").append(
+            "<li font>" + "You must select at least one category." + "</li>");
+            $(".validation-summary-valid").attr("class", "validation-summary-errors");
+            $(".validation-summary-errors").show();
+            
+        }
+        return valid;
+    }
+</script>
+        
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

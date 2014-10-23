@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="ONEHIRE" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Development\\OneHire\\Datacom\.CorporateSys\.Hire\\Datacom\.CorporateSys\.Hire\\obj\\msdev2sql2k12\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Development\\OneHire\\Datacom\.CorporateSys\.Hire\\Datacom\.CorporateSys\.Hire\\obj\\msdev2sql2k12\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="dbOneHire-Web.config Connection String" description="dbOneHire Connection String used in web.config by the application to access the database." value="Data Source=msdev2sql2k12.dsldev.local;Initial Catalog=OneHire;User ID=onehire;Password=Test1234;MultipleActiveResultSets=True;Trusted_Connection=False;Persist Security Info=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Development\\OneHire\\Datacom\.CorporateSys\.Hire\\Datacom\.CorporateSys\.Hire\\obj\\msdev2sql2k12\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='dbOneHire']/@connectionString" />
+  </parameter>
+</parameters>

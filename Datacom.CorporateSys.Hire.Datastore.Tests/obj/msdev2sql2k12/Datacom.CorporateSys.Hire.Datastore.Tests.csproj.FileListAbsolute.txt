@@ -1,0 +1,15 @@
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.dll.config
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Domain.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\EntityFramework.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\EntityFramework.SqlServer.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Domain.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\EntityFramework.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\EntityFramework.SqlServer.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.csprojResolveAssemblyReference.cache
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Tests.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore.Tests\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.dll.config

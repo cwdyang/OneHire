@@ -1,0 +1,14 @@
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.dll.config
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Domain.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\EntityFramework.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\EntityFramework.SqlServer.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\Datacom.CorporateSys.Hire.Domain.pdb
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\EntityFramework.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\bin\msdev2sql2k12\EntityFramework.SqlServer.xml
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.csprojResolveAssemblyReference.cache
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.Migrations.InitialMigrations.resources
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.csproj.GenerateResource.Cache
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.dll
+C:\Development\OneHire\Datacom.CorporateSys.Hire.Datastore\obj\msdev2sql2k12\Datacom.CorporateSys.Hire.Datastore.pdb

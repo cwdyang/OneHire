@@ -136,16 +136,27 @@ namespace Datacom.CorporateSys.Hire.Controllers
         }
 
 
-        [AjaxAuthorize]
+        [SessionCheckFilter(true)]
+        [HttpPost]
+        public ActionResult MarkQuestionUnsure(Guid questionId,bool isChecked)
+        {
+            var question = ViewModel.Exam.Questions.FirstOrDefault(x => x.Id==questionId);
+            
+            if(question==null)
+                return new EmptyResult();
+
+            question.IsUnsure = isChecked;
+
+            return Json(question);
+
+        }
+
+        [SessionCheckFilter(true)]
         [HttpPost]
         public ActionResult GetSubQuestion(Guid optionId)
         {
             
 
-            if (ViewModel == null || ViewModel.Candidate == null||ViewModel.Exam == null)
-                return new EmptyResult();
-
-            
             ViewData["IsLastQuestion"] = false;
 
             var option = ViewModel.Exam.Questions.SelectMany(x => x.Options).FirstOrDefault(x => x.Id == optionId);
@@ -194,6 +205,9 @@ namespace Datacom.CorporateSys.Hire.Controllers
             {
                 return Redirect(Request.UrlReferrer.ToString());
             }
+
+            if(optionSelected==null)
+                return new EmptyResult();
             
             var parentQuestion = ViewModel.Exam.Questions.FirstOrDefault(x => x.Id == optionSelected.ParentQuestionId) ??
                                  ViewModel.Exam.Questions.SelectMany(t => t.Options)
@@ -210,7 +224,8 @@ namespace Datacom.CorporateSys.Hire.Controllers
             if (ViewModel.Exam.Questions.All(x => x.SelectedOption != null))
                 return CompleteExamInternal();
 
-            var nextUnanweredQuestion = ViewModel.Exam.Questions.Where(x=>x.SelectedOption==null).OrderBy(x=>x.Sequence).FirstOrDefault();
+            var nextUnanweredQuestion = ViewModel.Exam.Questions.Where(x => x.SelectedOption == null && !x.IsUnsure).OrderBy(x => x.Sequence).FirstOrDefault() ?? ViewModel.Exam.Questions.Where(x => x.SelectedOption == null).OrderBy(x => x.Sequence).FirstOrDefault();
+
 
             ViewModel.Exam.CurrentQuestionNumber = (nextUnanweredQuestion != null) ? nextUnanweredQuestion.Sequence : 1;
 

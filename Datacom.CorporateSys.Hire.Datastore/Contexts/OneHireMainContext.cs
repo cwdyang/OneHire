@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using Datacom.CorporateSys.Hire.Datastore.Mappings;
+using Datacom.CorporateSys.Hire.Datastore.Migrations;
 using Datacom.CorporateSys.Hire.Domain.Models;
 
 using System.Data.Linq;
@@ -26,8 +27,9 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
     /// 
     /// To take down the database:
     /// 
-    /// ALTER DATABASE OneHire SET OFFLINE WITH
-    /// ROLLBACK IMMEDIATE
+    /// ALTER DATABASE OneHire SET OFFLINE WITH ROLLBACK IMMEDIATE
+    /// ALTER DATABASE OneHire SET SINGLE_USER WITH ROLLBACK IMMEDIATE --this elimiates mdf and ldf
+    /// 
     /// drop database OneHire
     /// go
     /// 
@@ -74,7 +76,11 @@ namespace Datacom.CorporateSys.Hire.Datastore.Contexts
 
             if (!Database.Exists())
             {
+
                 ((IObjectContextAdapter)this).ObjectContext.CreateDatabase();
+
+                new Configuration().SeedDb(this);
+                
             }
 
 		}

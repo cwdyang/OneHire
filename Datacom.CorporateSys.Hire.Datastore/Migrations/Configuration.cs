@@ -16,6 +16,11 @@ namespace Datacom.CorporateSys.Hire.Datastore.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
+        public void SeedDb(OneHireMainContext context)
+        {
+            Seed(context);
+        }
+
         /// <summary>
         /// http://blog.oneunicorn.com/2013/05/28/database-initializer-and-migrations-seed-methods/
         /// 

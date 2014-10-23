@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Runtime.Serialization;
@@ -151,6 +152,9 @@ namespace Datacom.CorporateSys.HireAPI
         [DataMember]
         public bool IsChildQuestion { get; set; }
 
+        [DataMember]
+        [DisplayName("I am not sure, answer later.")]
+        public bool IsUnsure { get; set; }
 
         [DataMember]
         public int ScorePoint { get; set; }
